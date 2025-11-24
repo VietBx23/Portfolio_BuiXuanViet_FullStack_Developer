@@ -295,7 +295,7 @@ const DNAHelix = () => {
                         </mesh>
                         <mesh position={[x2, 0, z2]}>
                             <sphereGeometry args={[0.15, 8, 8]} />
-                            <meshBasicMaterial color="#8b5cf6" />
+                            <meshBasicMaterial color="#3adf10ff" />
                         </mesh>
                         <lineSegments>
                             <bufferGeometry>

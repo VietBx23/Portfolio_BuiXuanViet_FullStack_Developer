@@ -71,7 +71,7 @@
       .glitch-hover:hover {
         animation: glitch 0.3s cubic-bezier(.25, .46, .45, .94) both infinite;
         color: #06b6d4;
-        text-shadow: 2px 2px #ff00c1, -2px -2px #00fff9;
+        text-shadow: 2px 2px #1b191b, -2px -2px #00fff9;
       }
 
       @keyframes glitch {
@@ -110,6 +110,7 @@
     "react/": "https://aistudiocdn.com/react@^19.2.0/",
     "react": "https://aistudiocdn.com/react@^19.2.0",
     "@react-three/drei": "https://aistudiocdn.com/@react-three/drei@^10.7.7",
+    "@react-three/postprocessing": "https://aistudiocdn.com/@react-three/postprocessing@^2.16.2",
     "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
     "three": "https://aistudiocdn.com/three@^0.181.2",
     "@react-three/fiber": "https://aistudiocdn.com/@react-three/fiber@^9.4.0",
@@ -117,8 +118,10 @@
   }
 }
 </script>
+<link rel="stylesheet" href="/index.css">
 </head>
   <body>
     <div id="root"></div>
-  </body>
+  <script type="module" src="/index.tsx"></script>
+</body>
 </html>
