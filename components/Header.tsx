@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, X, Sun, Moon, Facebook, MessageCircle, Send, Phone } from 'lucide-react';
-import { PERSONAL_INFO } from '../constants';
+import { useData } from '../context/DataContext';
 
 const Header: React.FC = () => {
+  const { personalInfo } = useData();
   const [activeSection, setActiveSection] = useState('home');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -100,7 +101,7 @@ const Header: React.FC = () => {
     {
         label: 'Phone',
         icon: Phone,
-        url: `tel:${PERSONAL_INFO.phone}`,
+        url: `tel:${personalInfo.phone}`,
         className: 'hover:text-emerald-500'
     }
   ];

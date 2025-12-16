@@ -1,8 +1,10 @@
 import React from 'react';
-import { SKILLS } from '../constants';
+import { useData } from '../context/DataContext';
 import RevealOnScroll from './RevealOnScroll';
 
 const Skills: React.FC = () => {
+  const { skills } = useData();
+
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const { currentTarget: target } = e;
     const rect = target.getBoundingClientRect();
@@ -41,7 +43,7 @@ const Skills: React.FC = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {SKILLS.map((category, index) => {
+          {skills.map((category, index) => {
             const Icon = category.icon;
             return (
               <RevealOnScroll key={index} delay={index * 100} direction="bottom">

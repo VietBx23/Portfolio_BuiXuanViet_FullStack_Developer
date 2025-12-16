@@ -1,9 +1,11 @@
 import React from 'react';
 import { GraduationCap, Award, Calendar } from 'lucide-react';
-import { EDUCATION } from '../constants';
+import { useData } from '../context/DataContext';
 import RevealOnScroll from './RevealOnScroll';
 
 const Education: React.FC = () => {
+  const { education } = useData();
+  
   return (
     <section id="education" className="py-24 bg-slate-50 dark:bg-[#020617] relative transition-colors duration-300">
        {/* Ambient Light */}
@@ -47,19 +49,19 @@ const Education: React.FC = () => {
                         {/* Content */}
                         <div className="flex-1 space-y-6">
                             <div>
-                                <h3 className="text-3xl font-bold text-slate-900 dark:text-white mb-2 tracking-tight">{EDUCATION.school}</h3>
-                                <div className="text-xl text-emerald-600 dark:text-emerald-400 font-medium">{EDUCATION.major}</div>
+                                <h3 className="text-3xl font-bold text-slate-900 dark:text-white mb-2 tracking-tight">{education.school}</h3>
+                                <div className="text-xl text-emerald-600 dark:text-emerald-400 font-medium">{education.major}</div>
                             </div>
 
                             <div className="flex flex-col md:flex-row gap-4 md:gap-8 justify-center md:justify-start">
                                 <div className="flex items-center gap-2 text-slate-600 dark:text-slate-400 bg-slate-100 dark:bg-slate-900/50 px-4 py-2 rounded-lg border border-slate-200 dark:border-slate-800/50">
                                     <Calendar className="w-4 h-4" />
-                                    <span className="text-sm font-mono">{EDUCATION.period}</span>
+                                    <span className="text-sm font-mono">{education.period}</span>
                                 </div>
                                 
                                 <div className="flex items-center gap-2 text-yellow-600 dark:text-yellow-500 bg-yellow-500/5 px-4 py-2 rounded-lg border border-yellow-500/10">
                                     <Award className="w-4 h-4" />
-                                    <span className="text-sm font-bold">GPA: {EDUCATION.gpa}</span>
+                                    <span className="text-sm font-bold">GPA: {education.gpa}</span>
                                 </div>
                             </div>
                         </div>

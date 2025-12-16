@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { Mail, Phone, Github, Send, ArrowRight, Loader2 } from 'lucide-react';
-import { PERSONAL_INFO } from '../constants';
+import { useData } from '../context/DataContext';
 
 const Footer: React.FC = () => {
+  const { personalInfo } = useData();
   const [formState, setFormState] = useState({
     name: '',
     email: '',
@@ -34,7 +35,7 @@ const Footer: React.FC = () => {
       `Name: ${formState.name}\nEmail: ${formState.email}\n\nMessage:\n${formState.message}`
     );
     
-    window.location.href = `mailto:${PERSONAL_INFO.email}?subject=${subject}&body=${body}`;
+    window.location.href = `mailto:${personalInfo.email}?subject=${subject}&body=${body}`;
     
     setIsSubmitting(false);
     setFormState({ name: '', email: '', subject: '', message: '' });
@@ -87,8 +88,8 @@ const Footer: React.FC = () => {
                          </div>
                          <div>
                             <span className="block text-slate-500 text-xs font-bold uppercase tracking-wider mb-1">Email Me</span>
-                            <a href={`mailto:${PERSONAL_INFO.email}`} className="text-xl font-bold text-slate-900 dark:text-white hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">
-                                {PERSONAL_INFO.email}
+                            <a href={`mailto:${personalInfo.email}`} className="text-xl font-bold text-slate-900 dark:text-white hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">
+                                {personalInfo.email}
                             </a>
                          </div>
                     </div>
@@ -99,8 +100,8 @@ const Footer: React.FC = () => {
                          </div>
                          <div>
                             <span className="block text-slate-500 text-xs font-bold uppercase tracking-wider mb-1">Call Me</span>
-                            <a href={`tel:${PERSONAL_INFO.phone}`} className="text-xl font-bold text-slate-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
-                                {PERSONAL_INFO.phone}
+                            <a href={`tel:${personalInfo.phone}`} className="text-xl font-bold text-slate-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                                {personalInfo.phone}
                             </a>
                          </div>
                     </div>
@@ -111,7 +112,7 @@ const Footer: React.FC = () => {
                          </div>
                          <div>
                             <span className="block text-slate-500 text-xs font-bold uppercase tracking-wider mb-1">GitHub</span>
-                            <a href={PERSONAL_INFO.github} target="_blank" rel="noopener noreferrer" className="text-xl font-bold text-slate-900 dark:text-white hover:text-purple-600 dark:hover:text-purple-400 transition-colors">
+                            <a href={personalInfo.github} target="_blank" rel="noopener noreferrer" className="text-xl font-bold text-slate-900 dark:text-white hover:text-purple-600 dark:hover:text-purple-400 transition-colors">
                                 VietBx23
                             </a>
                          </div>

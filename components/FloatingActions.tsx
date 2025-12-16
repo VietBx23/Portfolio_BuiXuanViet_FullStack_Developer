@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { ArrowUp, MessageCircle, X, Facebook, Send, Phone } from 'lucide-react';
-import { PERSONAL_INFO } from '../constants';
+import { useData } from '../context/DataContext';
 
 const FloatingActions: React.FC = () => {
+  const { personalInfo } = useData();
   const [showScrollTop, setShowScrollTop] = useState(false);
   const [isChatOpen, setIsChatOpen] = useState(false);
 
@@ -28,7 +29,7 @@ const FloatingActions: React.FC = () => {
     {
         label: 'Phone',
         icon: Phone,
-        url: `tel:${PERSONAL_INFO.phone}`,
+        url: `tel:${personalInfo.phone}`,
         className: 'text-emerald-600 hover:bg-emerald-500 hover:text-white',
         delay: '0ms'
     },
@@ -99,13 +100,15 @@ const FloatingActions: React.FC = () => {
 
 
       {/* --- Right Side: Scroll To Top --- */}
-      <button
-        onClick={scrollToTop}
-        className={`fixed bottom-8 right-8 z-[100] w-12 h-12 rounded-full bg-slate-900/80 dark:bg-slate-800/80 backdrop-blur-md border border-slate-700 dark:border-slate-600 text-emerald-400 flex items-center justify-center shadow-[0_0_15px_rgba(16,185,129,0.2)] hover:bg-emerald-500 hover:text-slate-900 hover:border-emerald-400 transition-all duration-500 transform group ${showScrollTop ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0 pointer-events-none'}`}
-        aria-label="Scroll to top"
-      >
-        <ArrowUp className="w-6 h-6 group-hover:-translate-y-1 transition-transform" />
-      </button>
+      <div className="fixed bottom-8 right-8 z-[100] flex flex-col gap-3">
+          <button
+            onClick={scrollToTop}
+            className={`w-12 h-12 rounded-full bg-slate-900/80 dark:bg-slate-800/80 backdrop-blur-md border border-slate-700 dark:border-slate-600 text-emerald-400 flex items-center justify-center shadow-[0_0_15px_rgba(16,185,129,0.2)] hover:bg-emerald-500 hover:text-slate-900 hover:border-emerald-400 transition-all duration-500 transform group ${showScrollTop ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0 pointer-events-none'}`}
+            aria-label="Scroll to top"
+          >
+            <ArrowUp className="w-6 h-6 group-hover:-translate-y-1 transition-transform" />
+          </button>
+      </div>
     </>
   );
 };

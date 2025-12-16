@@ -1,9 +1,11 @@
 import React, { useMemo } from 'react';
-import { ArrowRight, Github, Command, Database, Globe, Cpu, Download } from 'lucide-react';
-import { PERSONAL_INFO } from '../constants';
+import { Github, Command, Database, Globe, Cpu, Download } from 'lucide-react';
+import { useData } from '../context/DataContext';
 import RevealOnScroll from './RevealOnScroll';
 
 const Hero: React.FC = () => {
+  const { personalInfo } = useData();
+  
   // Generate refined meteors for Hero
   const meteors = useMemo(() => new Array(10).fill(true).map((_, idx) => ({
     left: Math.floor(Math.random() * 100) + '%',
@@ -98,7 +100,7 @@ const Hero: React.FC = () => {
 
                         {/* Secondary Button - Glass Style */}
                         <a 
-                            href={PERSONAL_INFO.github} 
+                            href={personalInfo.github} 
                             target="_blank" 
                             rel="noopener noreferrer" 
                             className="group relative w-full sm:w-auto px-8 py-4 rounded-xl bg-white/50 dark:bg-slate-900/40 backdrop-blur-md border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 font-bold tracking-wide hover:text-emerald-700 dark:hover:text-white hover:border-emerald-500/50 hover:bg-white/80 dark:hover:bg-slate-800/60 transition-all duration-300 active:scale-[0.98] shadow-lg"
@@ -112,12 +114,12 @@ const Hero: React.FC = () => {
                 </RevealOnScroll>
             </div>
 
-            {/* Right: Abstract Tech Visual - Expanded Code Block */}
+            {/* Right: Abstract Tech Visual */}
             <div className="flex-1 w-full relative hidden lg:block perspective-1000">
                  <RevealOnScroll direction="right" delay={200}>
                     <div className="relative w-full max-w-xl mx-auto">
                         
-                        {/* 1. Main Glass Card - Code Editor (Longer) */}
+                        {/* 1. Main Glass Card - Code Editor */}
                         <div className="relative bg-white/90 dark:bg-[#0f172a]/90 backdrop-blur-xl border border-slate-200 dark:border-slate-700 rounded-2xl shadow-2xl transform rotate-y-6 rotate-x-3 hover:rotate-y-0 hover:rotate-x-0 transition-transform duration-700 z-20 flex flex-col overflow-hidden h-[600px]">
                             {/* Header */}
                             <div className="h-10 border-b border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-[#020617]/50 flex items-center px-4 justify-between">
@@ -131,7 +133,7 @@ const Hero: React.FC = () => {
                                 </div>
                             </div>
                             
-                            {/* Body - Expanded Code */}
+                            {/* Body */}
                             <div className="flex-1 p-6 font-mono text-sm leading-relaxed overflow-hidden relative">
                                 <div className="absolute inset-0 bg-[linear-gradient(rgba(0,0,0,0.03)_1px,transparent_1px)] dark:bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:100%_24px] pointer-events-none"></div>
                                 <div className="relative z-10 space-y-1">
@@ -196,7 +198,7 @@ const Hero: React.FC = () => {
                             </div>
                         </div>
 
-                        {/* 2. Floating Elements Behind - Adjusted for light mode */}
+                        {/* 2. Floating Elements Behind */}
                         <div className="absolute -top-8 -right-12 w-48 h-48 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border border-slate-200 dark:border-slate-700 rounded-3xl flex flex-col items-center justify-center gap-3 shadow-xl animate-float z-10">
                             <Database className="w-12 h-12 text-emerald-500 dark:text-emerald-400" />
                             <span className="text-sm font-bold text-slate-800 dark:text-white uppercase tracking-wider">Backend</span>

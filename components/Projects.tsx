@@ -1,6 +1,6 @@
 import React, { useRef, useState, useMemo, useEffect } from 'react';
 import { Github, Smartphone, Monitor, ArrowUpRight, Lock, Layers, ChevronLeft, ChevronRight, ImageOff } from 'lucide-react';
-import { PROJECTS } from '../constants';
+import { useData } from '../context/DataContext';
 import { LinkData } from '../types';
 import RevealOnScroll from './RevealOnScroll';
 
@@ -171,6 +171,8 @@ const ImageSlider: React.FC<{ images: string[]; title: string }> = ({ images, ti
 };
 
 const Projects: React.FC = () => {
+  const { projects } = useData();
+
   // Meteors for Project section (sparse)
   const meteors = useMemo(() => new Array(6).fill(true).map((_, idx) => ({
     left: Math.floor(Math.random() * 100) + '%',
@@ -234,7 +236,7 @@ const Projects: React.FC = () => {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 space-y-32">
-          {PROJECTS.map((project, index) => (
+          {projects.map((project, index) => (
             <RevealOnScroll key={index} delay={index * 50} direction="bottom">
                 <div className="group relative">
                     {/* Giant Number Background */}

@@ -1,9 +1,11 @@
 import React from 'react';
-import { EXPERIENCE } from '../constants';
+import { useData } from '../context/DataContext';
 import RevealOnScroll from './RevealOnScroll';
 import { Briefcase, Calendar } from 'lucide-react';
 
 const Experience: React.FC = () => {
+  const { experience } = useData();
+
   return (
     <section id="experience" className="py-24 relative bg-transparent">
       {/* Background Glow */}
@@ -26,7 +28,7 @@ const Experience: React.FC = () => {
             <div className="absolute left-[19px] top-4 bottom-0 w-0.5 bg-gradient-to-b from-emerald-500 via-slate-300 dark:via-slate-700 to-slate-200 dark:to-slate-800 md:left-1/2 md:-ml-0.5"></div>
 
             <div className="space-y-12">
-                {EXPERIENCE.map((job, index) => (
+                {experience.map((job, index) => (
                   <RevealOnScroll key={index} delay={index * 100} direction="bottom" className="w-full">
                     <div className={`relative flex flex-col md:flex-row gap-8 items-center ${index % 2 === 0 ? 'md:flex-row-reverse' : ''}`}>
                         

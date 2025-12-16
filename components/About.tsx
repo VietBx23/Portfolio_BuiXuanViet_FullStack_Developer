@@ -1,9 +1,11 @@
 import React from 'react';
-import { Target, Rocket, User, MapPin, Coffee, Code, Sparkles, Brain } from 'lucide-react';
-import { SUMMARY, CAREER_GOALS, PERSONAL_INFO } from '../constants';
+import { Target, Rocket, User, MapPin, Brain } from 'lucide-react';
+import { useData } from '../context/DataContext';
 import RevealOnScroll from './RevealOnScroll';
 
 const About: React.FC = () => {
+  const { summary, careerGoals } = useData();
+
   // Magic border effect handler
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const { currentTarget: target } = e;
@@ -51,7 +53,7 @@ const About: React.FC = () => {
                         <div>
                             <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-4">The Architect's Mindset</h3>
                             <p className="text-slate-600 dark:text-slate-300 leading-relaxed text-lg font-light">
-                                {SUMMARY}
+                                {summary}
                             </p>
                         </div>
                     </div>
@@ -112,7 +114,7 @@ const About: React.FC = () => {
                             <h4 className="text-xl font-bold text-slate-900 dark:text-white">Current Focus</h4>
                         </div>
                         <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
-                            {CAREER_GOALS.shortTerm}
+                            {careerGoals.shortTerm}
                         </p>
                         {/* Visual Progress Bar Decoration */}
                         <div className="mt-6 space-y-2">
@@ -141,7 +143,7 @@ const About: React.FC = () => {
                             <h4 className="text-xl font-bold text-slate-900 dark:text-white">North Star</h4>
                         </div>
                         <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
-                            {CAREER_GOALS.longTerm}
+                            {careerGoals.longTerm}
                         </p>
                         {/* Visual Graphic Decoration */}
                         <div className="mt-6 flex gap-2">
