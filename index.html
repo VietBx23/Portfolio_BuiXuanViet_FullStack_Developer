@@ -9,6 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
     <script>
       tailwind.config = {
+        darkMode: 'class', // Enable manual toggling
         theme: {
           extend: {
             fontFamily: {
@@ -72,14 +73,30 @@
         }
       }
     </script>
+    <script>
+      // Initialize Theme
+      if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.classList.add('dark')
+      } else {
+        document.documentElement.classList.remove('dark')
+      }
+    </script>
     <style>
       body {
-        background-color: #020617; /* Slate 950 */
-        color: #e2e8f0; /* Slate 200 */
+        /* Default to Light Mode Colors, overridden by dark: class */
+        background-color: #f8fafc; /* Slate 50 */
+        color: #0f172a; /* Slate 900 */
         cursor: default;
+        transition: background-color 0.3s ease, color 0.3s ease;
       }
       
-      /* Global Noise Texture */
+      /* Dark mode override */
+      .dark body {
+        background-color: #020617; /* Slate 950 */
+        color: #e2e8f0; /* Slate 200 */
+      }
+      
+      /* Global Noise Texture - Only visible in Dark Mode */
       .bg-noise {
         position: fixed;
         top: 0;
@@ -88,14 +105,22 @@
         height: 100%;
         pointer-events: none;
         z-index: 50;
-        opacity: 0.03;
+        opacity: 0;
         background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        transition: opacity 0.3s ease;
+      }
+      .dark .bg-noise {
+        opacity: 0.03;
       }
 
       ::-webkit-scrollbar { width: 6px; }
-      ::-webkit-scrollbar-track { background: #020617; }
-      ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 10px; }
-      ::-webkit-scrollbar-thumb:hover { background: #334155; }
+      ::-webkit-scrollbar-track { background: transparent; }
+      ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; } /* Slate 300 */
+      .dark ::-webkit-scrollbar-track { background: #020617; }
+      .dark ::-webkit-scrollbar-thumb { background: #1e293b; }
+
+      ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+      .dark ::-webkit-scrollbar-thumb:hover { background: #334155; }
 
       html {
         scroll-behavior: smooth;
@@ -117,7 +142,7 @@
       .reveal-hidden-right { transform: translateX(30px); }
       .reveal-visible { opacity: 1; transform: translate(0, 0); }
 
-      /* Glitch Effect */
+      /* Glitch Effect - Dark Mode Only usually, but let's keep logic general */
       .glitch-wrapper { position: relative; }
       .glitch-text { position: relative; }
       .glitch-text::before, .glitch-text::after {
