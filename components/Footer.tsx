@@ -40,6 +40,21 @@ const Footer: React.FC = () => {
     setFormState({ name: '', email: '', subject: '', message: '' });
   };
 
+  const handleScroll = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    e.preventDefault();
+    const element = document.querySelector(href);
+    if (element) {
+        const headerOffset = 80;
+        const elementPosition = element.getBoundingClientRect().top;
+        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+        window.scrollTo({
+            top: offsetPosition,
+            behavior: "smooth"
+        });
+    }
+  };
+
   return (
     <footer id="contact" className="bg-slate-100 dark:bg-[#020617] pt-24 pb-12 relative overflow-hidden transition-colors duration-300">
       {/* Decorative Elements */}
@@ -184,10 +199,12 @@ const Footer: React.FC = () => {
 
         <div className="mt-24 pt-8 border-t border-slate-200 dark:border-slate-800/50 flex flex-col md:flex-row justify-between items-center text-slate-500 text-sm">
             <p>© {new Date().getFullYear()} Bui Xuan Viet. All rights reserved.</p>
-            <div className="flex gap-6 mt-4 md:mt-0">
-                <a href="#home" className="hover:text-emerald-500 transition-colors">Home</a>
-                <a href="#projects" className="hover:text-emerald-500 transition-colors">Projects</a>
-                <a href="#experience" className="hover:text-emerald-500 transition-colors">Experience</a>
+            <div className="flex flex-wrap justify-center gap-6 mt-4 md:mt-0">
+                <a href="#home" onClick={(e) => handleScroll(e, '#home')} className="hover:text-emerald-500 transition-colors">Home</a>
+                <a href="#skills" onClick={(e) => handleScroll(e, '#skills')} className="hover:text-emerald-500 transition-colors">Stack</a>
+                <a href="#experience" onClick={(e) => handleScroll(e, '#experience')} className="hover:text-emerald-500 transition-colors">Work</a>
+                <a href="#projects" onClick={(e) => handleScroll(e, '#projects')} className="hover:text-emerald-500 transition-colors">Projects</a>
+                <a href="#about" onClick={(e) => handleScroll(e, '#about')} className="hover:text-emerald-500 transition-colors">About</a>
             </div>
         </div>
       </div>

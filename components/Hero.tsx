@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { ArrowRight, Github, Command, Database, Globe, Cpu } from 'lucide-react';
+import { ArrowRight, Github, Command, Database, Globe, Cpu, Download } from 'lucide-react';
 import { PERSONAL_INFO } from '../constants';
 import RevealOnScroll from './RevealOnScroll';
 
@@ -81,16 +81,18 @@ const Hero: React.FC = () => {
 
                 <RevealOnScroll direction="bottom" delay={400}>
                     <div className="flex flex-col sm:flex-row items-center gap-6 justify-center lg:justify-start">
-                        {/* Primary Button - Premium Style */}
+                        {/* Primary Button - Premium Style - Updated to Download CV */}
                         <a 
-                            href="#projects" 
+                            href="https://drive.google.com/file/d/1ZzR4gwyr3M-Fb2XkfNA-o5z-an9IC2VR/view?usp=sharing" 
+                            target="_blank"
+                            rel="noopener noreferrer"
                             className="group relative w-full sm:w-auto px-8 py-4 rounded-xl font-bold tracking-wide text-white overflow-hidden transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
                         >
                             <div className="absolute inset-0 bg-gradient-to-r from-emerald-600 to-teal-600 shadow-[0_0_30px_rgba(16,185,129,0.4)]"></div>
                             <div className="absolute inset-0 bg-[linear-gradient(45deg,transparent_25%,rgba(255,255,255,0.2)_50%,transparent_75%)] bg-[length:250%_250%] animate-shimmer"></div>
                             <span className="relative z-10 flex items-center justify-center gap-3 text-lg">
-                                View Featured Works
-                                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                                Download CV
+                                <Download className="w-5 h-5 group-hover:translate-y-1 transition-transform" />
                             </span>
                         </a>
 
