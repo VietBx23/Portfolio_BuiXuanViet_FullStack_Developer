@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { ArrowUp, Phone, Facebook, Send, MessageCircle, X, MessageSquare } from 'lucide-react';
 
@@ -41,8 +40,8 @@ const FloatingActions: React.FC = () => {
     },
     {
         label: 'Zalo',
-        // Custom Zalo Text Icon
-        icon: () => <span className="font-black text-[10px] tracking-tighter">Zalo</span>,
+        // Custom Zalo Text Icon - accepts props to be compatible with Icon interface
+        icon: (props: any) => <span {...props} className="font-black text-[10px] tracking-tighter flex items-center justify-center w-full h-full">Zalo</span>,
         url: 'https://zalo.me/0932718625',
         color: 'bg-[#0068FF] hover:bg-[#0057d9]',
         delay: 100
@@ -91,7 +90,7 @@ const FloatingActions: React.FC = () => {
                     style={{ transitionDelay: `${isContactOpen ? link.delay : 0}ms` }}
                 >
                     <div className={`w-10 h-10 rounded-full flex items-center justify-center text-white shadow-lg shadow-black/30 transition-transform hover:scale-110 ${link.color}`}>
-                        <Icon className={typeof Icon === 'function' ? '' : "w-5 h-5"} />
+                        <Icon className="w-5 h-5" />
                     </div>
                     <span className="bg-slate-900/90 backdrop-blur text-white text-xs font-bold px-3 py-1.5 rounded-lg border border-slate-700 shadow-xl opacity-0 group-hover:opacity-100 transition-opacity -translate-x-2 group-hover:translate-x-0">
                         {link.label}

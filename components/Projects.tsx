@@ -1,259 +1,359 @@
-import React from 'react';
-import { Github, ExternalLink, Smartphone, Layers, Lock } from 'lucide-react';
+import React, { useRef, useState } from 'react';
+import { Github, Smartphone, Monitor, ArrowUpRight, Lock, ExternalLink, Layers } from 'lucide-react';
 import { PROJECTS } from '../constants';
 import { LinkData } from '../types';
 import RevealOnScroll from './RevealOnScroll';
 
-const Projects: React.FC = () => {
-  
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    const { currentTarget: target } = e;
-    const rect = target.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    target.style.setProperty("--mouse-x", `${x}px`);
-    target.style.setProperty("--mouse-y", `${y}px`);
-  };
+// --- 3D Tilt Wrapper ---
+const ProjectCard3D: React.FC<{ children: React.ReactNode; className?: string }> = ({ children, className }) => {
+    const cardRef = useRef<HTMLDivElement>(null);
+    const [rotation, setRotation] = useState({ x: 0, y: 0 });
+    const [isHovering, setIsHovering] = useState(false);
 
+    const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+        if (!cardRef.current) return;
+        const rect = cardRef.current.getBoundingClientRect();
+        const width = rect.width;
+        const height = rect.height;
+        const mouseX = e.clientX - rect.left;
+        const mouseY = e.clientY - rect.top;
+        const xPct = mouseX / width - 0.5;
+        const yPct = mouseY / height - 0.5;
+        // Limit rotation for subtle effect
+        const rotateY = xPct * 3; 
+        const rotateX = yPct * -3;
+        setRotation({ x: rotateX, y: rotateY });
+    };
+
+    const handleMouseEnter = () => setIsHovering(true);
+    const handleMouseLeave = () => {
+        setIsHovering(false);
+        setRotation({ x: 0, y: 0 });
+    };
+
+    return (
+        <div
+            ref={cardRef}
+            onMouseMove={handleMouseMove}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+            className={`perspective-1000 ${className}`}
+            style={{ perspective: '1000px' }}
+        >
+            <div
+                className="transition-transform duration-500 ease-out transform-style-3d w-full h-full"
+                style={{
+                    transform: `rotateX(${rotation.x}deg) rotateY(${rotation.y}deg) scale(${isHovering ? 1.01 : 1})`,
+                    transformStyle: 'preserve-3d',
+                }}
+            >
+                {children}
+            </div>
+        </div>
+    );
+};
+
+// --- Wireframe Components ---
+
+// 1. Mobile App Wireframe (iPhone Style)
+const MobileWireframe = () => (
+    <div className="relative w-[150px] h-[300px] bg-[#0a0f1c] rounded-[2.5rem] border-[6px] border-[#1e293b] shadow-2xl transform rotate-[-6deg] group-hover:rotate-0 transition-all duration-700 ease-[cubic-bezier(0.34,1.56,0.64,1)] z-20">
+      {/* Dynamic Island */}
+      <div className="absolute top-3 left-1/2 -translate-x-1/2 w-16 h-5 bg-black rounded-full z-30 flex items-center justify-center gap-1.5">
+         <div className="w-1 h-1 rounded-full bg-slate-800"></div>
+         <div className="w-1 h-1 rounded-full bg-emerald-500/50"></div>
+      </div>
+      
+      {/* Screen */}
+      <div className="w-full h-full bg-[#0f172a] rounded-[2.2rem] overflow-hidden flex flex-col relative">
+          {/* Header Map/Gradient */}
+          <div className="h-24 bg-gradient-to-br from-emerald-900/40 to-slate-900 relative overflow-hidden border-b border-white/5">
+             <div className="absolute inset-0 bg-[radial-gradient(#10b981_1px,transparent_1px)] [background-size:12px_12px] opacity-20"></div>
+             {/* Abstract Map Pin */}
+             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center animate-pulse">
+                <div className="w-3 h-3 bg-emerald-400 rounded-full shadow-[0_0_15px_#34d399]"></div>
+             </div>
+          </div>
+          
+          {/* App List Content */}
+          <div className="p-3 space-y-2 flex-1 bg-slate-900/50">
+             {[1, 2, 3].map((i) => (
+                 <div key={i} className="flex items-center gap-2 p-2 rounded-xl bg-white/5 border border-white/5 backdrop-blur-sm">
+                    <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${i===1 ? 'bg-emerald-500/20 text-emerald-400' : 'bg-slate-800 text-slate-600'}`}>
+                        <div className="w-4 h-4 rounded-sm bg-current opacity-50"></div>
+                    </div>
+                    <div className="space-y-1.5 flex-1">
+                       <div className="w-16 h-1.5 bg-slate-600/50 rounded-full"></div>
+                       <div className="w-24 h-1.5 bg-slate-700/30 rounded-full"></div>
+                    </div>
+                 </div>
+             ))}
+             {/* Chart */}
+             <div className="mt-auto h-20 rounded-xl bg-white/5 border border-white/5 flex items-end justify-between px-3 pb-2 pt-3 gap-1">
+                 {[40, 70, 50, 90, 30, 80].map((h, i) => (
+                     <div key={i} className="w-full bg-emerald-500/40 rounded-t-sm" style={{height: `${h}%`}}></div>
+                 ))}
+             </div>
+          </div>
+
+          {/* Bottom Nav */}
+          <div className="h-14 border-t border-white/5 bg-[#0a0f1c] flex items-center justify-around px-2">
+             {[1,2,3,4].map(i => <div key={i} className="w-10 h-1 rounded-full bg-slate-800"></div>)}
+          </div>
+      </div>
+      
+      {/* Reflection */}
+      <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-white/10 to-transparent pointer-events-none rounded-r-[2.5rem]"></div>
+    </div>
+);
+
+// 2. Dashboard Wireframe (Browser Style)
+const BrowserWireframe = ({ type }: { type: string }) => {
+    const isEcommerce = type.toLowerCase().includes('sneaker') || type.toLowerCase().includes('shop');
+    
+    return (
+        <div className="w-[90%] aspect-[16/10] bg-[#0f172a] rounded-xl border border-slate-700 shadow-2xl flex flex-col overflow-hidden transform group-hover:scale-[1.02] transition-transform duration-700 relative z-10 mx-auto">
+            {/* Browser Bar */}
+            <div className="h-8 bg-[#1e293b] border-b border-slate-700 flex items-center px-4 gap-2">
+                <div className="flex gap-1.5">
+                    <div className="w-2.5 h-2.5 rounded-full bg-rose-500/80"></div>
+                    <div className="w-2.5 h-2.5 rounded-full bg-amber-500/80"></div>
+                    <div className="w-2.5 h-2.5 rounded-full bg-emerald-500/80"></div>
+                </div>
+                <div className="ml-4 flex-1 h-5 bg-slate-800/50 rounded-md text-[9px] flex items-center px-3 text-slate-500 font-mono">
+                    https://{type.toLowerCase().replace(/\s/g, '')}.com
+                </div>
+            </div>
+
+            {/* Window Content */}
+            <div className="flex-1 flex relative">
+                 {/* Sidebar */}
+                <div className="w-14 bg-slate-900/50 border-r border-slate-800 hidden sm:flex flex-col items-center py-4 gap-4">
+                    <div className="w-8 h-8 rounded-lg bg-emerald-500/20 mb-2 border border-emerald-500/20"></div>
+                    {[1,2,3,4].map(i => <div key={i} className="w-5 h-5 rounded bg-slate-800/80"></div>)}
+                </div>
+
+                {/* Main Area */}
+                <div className="flex-1 p-4 bg-slate-950 relative overflow-hidden">
+                    {/* Background Grid */}
+                    <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:24px_24px]"></div>
+
+                    {isEcommerce ? (
+                        // E-commerce Layout
+                        <div className="relative z-10 space-y-4">
+                             {/* Hero Banner */}
+                             <div className="w-full h-28 rounded-xl bg-gradient-to-r from-slate-900 to-slate-800 border border-slate-800/50 p-4 flex flex-col justify-center relative overflow-hidden">
+                                 <div className="absolute right-0 top-0 w-32 h-full bg-gradient-to-l from-emerald-500/10 to-transparent"></div>
+                                 <div className="w-1/3 h-3 bg-slate-700 rounded mb-2"></div>
+                                 <div className="w-1/2 h-2 bg-slate-800 rounded"></div>
+                                 <div className="mt-3 px-3 py-1 bg-emerald-500 text-slate-900 font-bold w-fit rounded text-[9px]">Shop Collection</div>
+                             </div>
+
+                             <div className="grid grid-cols-3 gap-3">
+                                 {[1,2,3].map(i => (
+                                     <div key={i} className="rounded-xl border border-slate-800 bg-slate-900/80 flex flex-col p-2 gap-2">
+                                         <div className="aspect-square rounded-lg bg-slate-800/50 relative overflow-hidden group/item">
+                                              <div className="absolute inset-0 bg-slate-800"></div>
+                                              <div className="absolute inset-2 bg-slate-700/30 rounded"></div>
+                                         </div>
+                                         <div className="h-2 w-3/4 bg-slate-700/50 rounded"></div>
+                                         <div className="h-2 w-1/2 bg-emerald-500/30 rounded"></div>
+                                     </div>
+                                 ))}
+                             </div>
+                        </div>
+                    ) : (
+                        // Admin Dashboard Layout
+                        <div className="relative z-10 space-y-4">
+                             <div className="grid grid-cols-3 gap-4">
+                                 {[1,2,3].map(i => (
+                                     <div key={i} className="h-24 rounded-xl border border-slate-800 bg-slate-900/80 p-4 flex flex-col justify-between relative overflow-hidden">
+                                         <div className="absolute top-0 right-0 p-2 opacity-20">
+                                            <div className="w-8 h-8 rounded-full bg-white"></div>
+                                         </div>
+                                         <div className="w-8 h-8 rounded-lg bg-slate-800 border border-slate-700"></div>
+                                         <div className="space-y-1.5">
+                                            <div className="h-2 w-16 bg-slate-700/50 rounded"></div>
+                                            <div className="h-3 w-10 bg-emerald-500/40 rounded"></div>
+                                         </div>
+                                     </div>
+                                 ))}
+                             </div>
+                             {/* Table/Chart */}
+                             <div className="w-full h-40 rounded-xl border border-slate-800 bg-slate-900/50 p-4">
+                                 <div className="flex items-end justify-between h-full gap-3 px-2 pb-1">
+                                     {[35, 60, 45, 80, 50, 75, 60, 90, 55, 70].map((h, i) => (
+                                         <div key={i} className="w-full bg-gradient-to-t from-emerald-500/20 to-emerald-500/50 border-t border-emerald-400/50 rounded-t-sm relative group/bar" style={{height: `${h}%`}}>
+                                            <div className="absolute -top-4 left-1/2 -translate-x-1/2 text-[8px] text-emerald-400 opacity-0 group-hover/bar:opacity-100 transition-opacity">{h}%</div>
+                                         </div>
+                                     ))}
+                                 </div>
+                             </div>
+                        </div>
+                    )}
+                </div>
+            </div>
+            {/* Reflection */}
+            <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/5 to-transparent pointer-events-none"></div>
+        </div>
+    );
+};
+
+
+const Projects: React.FC = () => {
   const renderLinkIcon = (type: LinkData['type']) => {
     switch (type) {
-      case 'github': return <Github className="h-4 w-4 mr-2" />;
-      case 'android': return <Smartphone className="h-4 w-4 mr-2" />;
-      case 'ios': return <Smartphone className="h-4 w-4 mr-2" />;
-      default: return <ExternalLink className="h-4 w-4 mr-2" />;
+      case 'github': return <Github className="h-4 w-4" />;
+      case 'android': return <Smartphone className="h-4 w-4" />;
+      case 'ios': return <Smartphone className="h-4 w-4" />;
+      default: return <Monitor className="h-4 w-4" />;
     }
   };
 
-  // --- New Premium Visual Components ---
-
-  const MobileMockup = () => (
-    <div className="relative w-[160px] h-[320px] bg-slate-950 rounded-[2.5rem] border-[6px] border-slate-800 shadow-2xl transform rotate-[-5deg] group-hover:rotate-0 transition-all duration-500 ease-out z-20">
-      {/* Notch */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-20 h-5 bg-slate-800 rounded-b-xl z-20"></div>
-      
-      {/* Screen Content */}
-      <div className="w-full h-full bg-slate-900 rounded-[2rem] overflow-hidden relative">
-          {/* Header Gradient */}
-          <div className="h-24 bg-gradient-to-br from-emerald-500/20 to-blue-600/20 w-full relative">
-             <div className="absolute bottom-4 left-4 w-8 h-8 rounded-full bg-white/10 backdrop-blur-md"></div>
-             <div className="absolute bottom-4 right-4 w-24 h-4 rounded-full bg-white/10 backdrop-blur-md"></div>
-          </div>
-          
-          {/* App Body */}
-          <div className="p-4 space-y-3">
-             <div className="w-full h-16 rounded-xl bg-slate-800/50 border border-slate-700/50 flex items-center px-3 gap-3">
-                <div className="w-8 h-8 rounded-full bg-emerald-500/20"></div>
-                <div className="flex-1 space-y-1">
-                   <div className="w-3/4 h-2 bg-slate-700 rounded-full"></div>
-                   <div className="w-1/2 h-2 bg-slate-700/50 rounded-full"></div>
-                </div>
-             </div>
-             <div className="w-full h-16 rounded-xl bg-slate-800/50 border border-slate-700/50 flex items-center px-3 gap-3 opacity-60">
-                <div className="w-8 h-8 rounded-full bg-blue-500/20"></div>
-                <div className="flex-1 space-y-1">
-                   <div className="w-2/3 h-2 bg-slate-700 rounded-full"></div>
-                </div>
-             </div>
-             {/* Map/Chart Area */}
-             <div className="w-full h-24 rounded-xl bg-slate-800/30 border border-slate-700/30 mt-2 relative overflow-hidden">
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-emerald-500/10 to-transparent"></div>
-             </div>
-          </div>
-
-          {/* Floating Action Button */}
-          <div className="absolute bottom-6 right-6 w-10 h-10 rounded-full bg-emerald-500 shadow-lg shadow-emerald-500/40 flex items-center justify-center">
-             <div className="w-4 h-4 text-slate-900 font-bold">+</div>
-          </div>
-      </div>
-    </div>
-  );
-
-  const DashboardMockup = () => (
-    <div className="w-full h-full flex items-center justify-center relative p-6">
-       {/* Main Window */}
-       <div className="w-full aspect-[16/10] bg-[#0f172a]/90 backdrop-blur-xl rounded-xl border border-slate-700/50 shadow-2xl relative z-10 flex flex-col overflow-hidden transform group-hover:scale-[1.02] transition-transform duration-500">
-          {/* Window Bar */}
-          <div className="h-8 bg-slate-800/50 border-b border-slate-700/50 flex items-center px-4 gap-2">
-             <div className="w-2.5 h-2.5 rounded-full bg-red-500/20 border border-red-500/50"></div>
-             <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/20 border border-yellow-500/50"></div>
-             <div className="w-2.5 h-2.5 rounded-full bg-green-500/20 border border-green-500/50"></div>
-          </div>
-
-          {/* Dashboard Layout */}
-          <div className="flex-1 p-4 flex gap-4">
-             {/* Sidebar */}
-             <div className="w-16 hidden sm:flex flex-col gap-3 border-r border-slate-700/30 pr-4">
-                <div className="w-8 h-8 rounded-lg bg-emerald-500/20"></div>
-                <div className="w-full h-[1px] bg-slate-700/50 my-1"></div>
-                <div className="w-6 h-6 rounded bg-slate-800"></div>
-                <div className="w-6 h-6 rounded bg-slate-800/50"></div>
-                <div className="w-6 h-6 rounded bg-slate-800/50"></div>
-             </div>
-
-             {/* Main Content */}
-             <div className="flex-1 flex flex-col gap-4">
-                {/* Stats Row */}
-                <div className="grid grid-cols-3 gap-3">
-                   <div className="h-16 rounded-lg bg-slate-800/40 border border-slate-700/30 p-2 relative overflow-hidden">
-                      <div className="absolute bottom-0 left-0 w-full h-1 bg-emerald-500"></div>
-                   </div>
-                   <div className="h-16 rounded-lg bg-slate-800/40 border border-slate-700/30 p-2 relative overflow-hidden">
-                      <div className="absolute bottom-0 left-0 w-full h-1 bg-blue-500"></div>
-                   </div>
-                   <div className="h-16 rounded-lg bg-slate-800/40 border border-slate-700/30 p-2 relative overflow-hidden">
-                      <div className="absolute bottom-0 left-0 w-full h-1 bg-purple-500"></div>
-                   </div>
-                </div>
-                
-                {/* Chart Area */}
-                <div className="flex-1 rounded-lg bg-slate-800/30 border border-slate-700/30 flex items-end justify-between p-4 gap-2">
-                    {[40, 70, 45, 90, 60, 80, 50].map((h, i) => (
-                       <div key={i} className="flex-1 bg-slate-700/50 rounded-t-sm hover:bg-emerald-500/50 transition-colors duration-300" style={{ height: `${h}%` }}></div>
-                    ))}
-                </div>
-             </div>
-          </div>
-       </div>
-
-       {/* Floating Background Card (Decoration) */}
-       <div className="absolute -right-4 -bottom-4 w-2/3 h-2/3 bg-slate-800/50 backdrop-blur-md rounded-xl border border-slate-700/30 -z-0"></div>
-    </div>
-  );
-
-  const getProjectVisual = (title: string, index: number) => {
+  const getVisual = (title: string, index: number) => {
     const isMobile = title.toLowerCase().includes('mobile') || title.toLowerCase().includes('app');
     
     return (
-        <div className="w-full h-full bg-slate-950/40 flex items-center justify-center relative overflow-hidden border-l border-slate-800/50 group-hover:bg-slate-900/40 transition-colors duration-500">
-             {/* Animated Grid Background */}
-             <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_80%_80%_at_50%_50%,black,transparent)]"></div>
+        <div className="w-full h-full bg-[#050914] flex items-center justify-center relative overflow-hidden group-hover:bg-[#080d1a] transition-colors duration-500">
+             {/* 1. Perspective Grid Background */}
+             <div className="absolute inset-0 perspective-[500px]">
+                 <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:40px_40px] [transform:rotateX(60deg)] origin-top opacity-30"></div>
+             </div>
              
-             {/* Holographic Glow Spot */}
-             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-emerald-500/10 blur-[80px] rounded-full pointer-events-none group-hover:bg-emerald-500/20 transition-all duration-700"></div>
+             {/* 2. Ambient Glow */}
+             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3/4 h-3/4 bg-emerald-500/10 blur-[100px] rounded-full pointer-events-none group-hover:bg-emerald-500/20 transition-all duration-700"></div>
+             
+             {/* 3. Tech Deco Lines */}
+             <div className="absolute top-0 left-0 w-full h-full pointer-events-none opacity-20">
+                 <div className="absolute top-4 left-4 w-2 h-2 border-t border-l border-white"></div>
+                 <div className="absolute top-4 right-4 w-2 h-2 border-t border-r border-white"></div>
+                 <div className="absolute bottom-4 left-4 w-2 h-2 border-b border-l border-white"></div>
+                 <div className="absolute bottom-4 right-4 w-2 h-2 border-b border-r border-white"></div>
+             </div>
 
-             {isMobile ? <MobileMockup /> : <DashboardMockup />}
+             {/* 4. Wireframe */}
+             <div className="transform scale-100 transition-transform duration-500 relative z-20">
+                {isMobile ? <MobileWireframe /> : <BrowserWireframe type={title} />}
+             </div>
         </div>
     );
   };
 
   return (
-    <section id="projects" className="py-32 relative overflow-hidden bg-[#020617]">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="flex flex-col md:flex-row items-end justify-between mb-24 gap-6">
-          <div className="max-w-2xl">
-              <RevealOnScroll direction="bottom">
-                <div className="flex items-center gap-2 text-emerald-500 font-mono text-sm font-bold tracking-wider uppercase mb-4">
-                    <span className="w-8 h-[2px] bg-emerald-500"></span>
-                    Selected Works
-                </div>
-              </RevealOnScroll>
-              <RevealOnScroll delay={200} direction="bottom">
-                <h2 className="text-4xl md:text-5xl font-black text-white tracking-tight">
-                    Featured <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-400">Projects</span>
-                </h2>
-              </RevealOnScroll>
-          </div>
-          <div className="hidden md:block">
-             <RevealOnScroll delay={300} direction="left">
-                <p className="text-slate-400 text-right max-w-sm leading-relaxed">
-                    Deep dive into my key projects, showcasing backend architecture and full-stack capabilities.
-                </p>
-             </RevealOnScroll>
-          </div>
-        </div>
+    <section id="projects" className="py-32 relative bg-[#020617] overflow-hidden">
+      {/* Global Background Grid */}
+      <div className="absolute inset-0 bg-[linear-gradient(rgba(16,185,129,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(16,185,129,0.03)_1px,transparent_1px)] bg-[size:100px_100px] pointer-events-none"></div>
 
-        <div className="space-y-32">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 mb-24">
+        <RevealOnScroll direction="bottom">
+            <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-slate-800/50 pb-8">
+                <div>
+                    <h2 className="text-sm font-bold text-emerald-500 uppercase tracking-widest mb-3 flex items-center gap-2">
+                         <Layers className="w-4 h-4" />
+                         Engineering
+                    </h2>
+                    <h3 className="text-4xl md:text-6xl font-black text-white tracking-tight leading-none">
+                        Featured <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-400">Works</span>
+                    </h3>
+                </div>
+                <div className="hidden md:block text-right">
+                    <p className="text-slate-400 text-sm max-w-xs ml-auto leading-relaxed">
+                        A curated selection of scalable systems, complex integrations, and user-centric applications.
+                    </p>
+                </div>
+            </div>
+        </RevealOnScroll>
+      </div>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 space-y-32">
           {PROJECTS.map((project, index) => (
-            <RevealOnScroll key={index} delay={index * 100} direction="bottom">
-                <div 
-                onMouseMove={handleMouseMove}
-                className="group relative"
-                >
-                {/* Background Numbering */}
-                <div className="absolute -top-20 -left-10 text-[12rem] font-black text-slate-800/20 select-none z-0">
-                    0{index + 1}
-                </div>
-
-                <div className="relative z-10 grid lg:grid-cols-2 gap-8 items-center">
-                    
-                    {/* Visual Frame */}
-                    <div className={`order-2 ${index % 2 === 0 ? 'lg:order-2' : 'lg:order-1'}`}>
-                        <div className="relative rounded-2xl overflow-hidden border border-slate-800 bg-slate-900/30 aspect-[16/10] shadow-2xl group-hover:border-emerald-500/30 transition-colors duration-500 backdrop-blur-sm">
-                            {getProjectVisual(project.title, index)}
-                        </div>
+            <RevealOnScroll key={index} delay={index * 50} direction="bottom">
+                <div className="group relative">
+                    {/* Giant Number Background */}
+                    <div className={`absolute top-0 -translate-y-1/2 text-[15rem] leading-none font-black text-slate-800/20 select-none z-0 pointer-events-none transition-all duration-700 group-hover:text-slate-800/40 ${index % 2 === 0 ? '-left-20' : '-right-20'}`}>
+                        0{index + 1}
                     </div>
 
-                    {/* Text Content */}
-                    <div className={`order-1 ${index % 2 === 0 ? 'lg:order-1 lg:pr-12' : 'lg:order-2 lg:pl-12'}`}>
-                        <div className="flex items-center gap-3 mb-4">
-                            <span className="text-emerald-400 font-mono text-xs font-bold px-2 py-1 rounded bg-emerald-950/30 border border-emerald-500/20 uppercase tracking-wider shadow-[0_0_10px_rgba(16,185,129,0.2)]">
-                                {project.period}
-                            </span>
-                            {index === 0 && (
-                                <span className="flex items-center gap-1.5 text-blue-400 font-mono text-xs font-bold px-2 py-1 rounded bg-blue-950/30 border border-blue-500/20 uppercase tracking-wider shadow-[0_0_10px_rgba(59,130,246,0.2)]">
-                                    <span className="relative flex h-2 w-2">
-                                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
-                                    <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
-                                    </span>
-                                    Latest
-                                </span>
-                            )}
+                    <div className={`relative z-10 flex flex-col lg:flex-row ${index % 2 === 0 ? '' : 'lg:flex-row-reverse'} items-center gap-12 lg:gap-20`}>
+                        
+                        {/* Visual Side */}
+                        <div className="w-full lg:w-[60%] perspective-1000">
+                             <ProjectCard3D>
+                                <div className="relative rounded-2xl overflow-hidden border border-slate-800 bg-[#050914] shadow-2xl shadow-black/50 group-hover:shadow-emerald-500/10 group-hover:border-emerald-500/30 transition-all duration-500 aspect-video">
+                                    {getVisual(project.title, index)}
+                                    
+                                    {/* Glass Shine */}
+                                    <div className="absolute inset-0 bg-gradient-to-tr from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
+                                </div>
+                             </ProjectCard3D>
                         </div>
-                        
-                        <h3 className="text-3xl md:text-4xl font-bold text-white mb-6 group-hover:text-emerald-400 transition-colors duration-300">
-                            {project.title}
-                        </h3>
-                        
-                        <div className="relative mb-8">
-                            <div className="absolute left-0 top-0 bottom-0 w-[2px] bg-gradient-to-b from-emerald-500 to-transparent"></div>
-                            <p className="text-slate-300 text-lg leading-relaxed pl-6">
+
+                        {/* Content Side */}
+                        <div className="w-full lg:w-[40%] relative">
+                            {/* Decoration Line */}
+                            <div className="w-12 h-1 bg-emerald-500 mb-6"></div>
+
+                            <div className="flex items-center gap-3 mb-4">
+                                <span className="text-xs font-bold uppercase tracking-wider text-slate-400 font-mono">
+                                    {project.period}
+                                </span>
+                                {index === 0 && (
+                                    <span className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20 animate-pulse">
+                                        Latest Build
+                                    </span>
+                                )}
+                            </div>
+
+                            <h3 className="text-3xl md:text-4xl font-bold text-white mb-6 leading-tight group-hover:text-emerald-400 transition-colors">
+                                {project.title}
+                            </h3>
+
+                            <p className="text-slate-400 text-base leading-relaxed mb-8">
                                 {project.description}
                             </p>
-                        </div>
 
-                        <div className="mb-8 bg-slate-900/40 p-5 rounded-xl border border-slate-800/50">
-                            <h4 className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3 flex items-center gap-2">
-                            <Layers className="w-4 h-4" /> Tech Stack
-                            </h4>
-                            <div className="flex flex-wrap gap-2">
-                                {project.tech.map((t, i) => (
-                                <span key={i} className="px-3 py-1.5 bg-slate-950 text-slate-300 text-xs font-bold font-mono rounded border border-slate-800 hover:text-emerald-300 hover:border-emerald-500/30 transition-all cursor-default">
-                                    {t}
-                                </span>
-                                ))}
+                            {/* Tech Stack Pills */}
+                            <div className="mb-10">
+                                <div className="flex flex-wrap gap-2">
+                                    {project.tech.map((t, i) => (
+                                        <span key={i} className="text-xs font-semibold text-slate-300 bg-slate-900/80 border border-slate-800 px-3 py-1.5 rounded-full hover:border-emerald-500/50 hover:text-emerald-300 hover:shadow-[0_0_10px_rgba(16,185,129,0.2)] transition-all cursor-default backdrop-blur-sm">
+                                            {t}
+                                        </span>
+                                    ))}
+                                </div>
+                            </div>
+
+                            {/* Action Links */}
+                            <div className="flex flex-wrap gap-4">
+                                {project.links.length > 0 ? (
+                                    project.links.map((link, i) => (
+                                    <a 
+                                        key={i} 
+                                        href={link.url}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="relative inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-slate-100 text-slate-950 font-bold text-sm transition-all transform hover:-translate-y-1 hover:shadow-lg hover:shadow-emerald-500/20 overflow-hidden group/btn"
+                                    >
+                                        <span className="absolute inset-0 bg-gradient-to-r from-emerald-400 to-emerald-300 opacity-0 group-hover/btn:opacity-100 transition-opacity duration-300"></span>
+                                        <span className="relative flex items-center gap-2">
+                                            {renderLinkIcon(link.type)}
+                                            {link.label}
+                                            <ArrowUpRight className="w-4 h-4 opacity-50 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-transform" />
+                                        </span>
+                                    </a>
+                                    ))
+                                ) : (
+                                    <span className="inline-flex items-center text-slate-500 text-sm font-medium px-6 py-3 border border-dashed border-slate-800 rounded-xl bg-slate-900/50 cursor-not-allowed">
+                                        <Lock className="w-4 h-4 mr-2" />
+                                        Private Project
+                                    </span>
+                                )}
                             </div>
                         </div>
-
-                        <div className="flex flex-wrap gap-4">
-                            {project.links.length > 0 ? (
-                                project.links.map((link, i) => (
-                                <a 
-                                    key={i} 
-                                    href={link.url}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="group/btn inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-white text-slate-950 hover:bg-emerald-400 font-bold text-sm transition-all transform hover:-translate-y-1 shadow-lg shadow-white/5 hover:shadow-emerald-400/20 overflow-hidden relative"
-                                >
-                                    <span className="relative z-10 flex items-center gap-2">
-                                    {renderLinkIcon(link.type)}
-                                    {link.label}
-                                    </span>
-                                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent -translate-x-full group-hover/btn:animate-[shimmer_1.5s_infinite]"></div>
-                                </a>
-                                ))
-                            ) : (
-                                <span className="inline-flex items-center text-slate-500 text-sm font-medium px-5 py-3 border border-dashed border-slate-700 rounded-lg bg-slate-900/50 cursor-not-allowed">
-                                    <Lock className="w-4 h-4 mr-2" />
-                                    Private Internal System
-                                </span>
-                            )}
-                        </div>
                     </div>
-                </div>
                 </div>
             </RevealOnScroll>
           ))}
-        </div>
       </div>
     </section>
   );

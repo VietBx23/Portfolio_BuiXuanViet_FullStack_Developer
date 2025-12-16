@@ -1,103 +1,94 @@
 import React from 'react';
-import { Briefcase, Calendar } from 'lucide-react';
 import { EXPERIENCE } from '../constants';
 import RevealOnScroll from './RevealOnScroll';
+import { Briefcase, Calendar } from 'lucide-react';
 
 const Experience: React.FC = () => {
   return (
-    <section id="experience" className="py-32 relative overflow-hidden bg-[#020617]">
-      {/* Background Circuit Lines */}
-      <div className="absolute inset-0 opacity-5 pointer-events-none">
-          <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
-             <pattern id="circuit" x="0" y="0" width="100" height="100" patternUnits="userSpaceOnUse">
-                <path d="M10 10h80v80h-80z" fill="none" stroke="currentColor" strokeWidth="1"/>
-                <path d="M50 10v80M10 50h80" fill="none" stroke="currentColor" strokeWidth="0.5"/>
-             </pattern>
-             <rect width="100%" height="100%" fill="url(#circuit)" />
-          </svg>
-      </div>
+    <section id="experience" className="py-24 relative bg-[#020617]">
+      {/* Background Glow */}
+      <div className="absolute top-1/4 right-0 w-[500px] h-[500px] bg-emerald-500/5 rounded-full blur-[100px] pointer-events-none"></div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-20">
-           <RevealOnScroll direction="right">
-               <div>
-                  <h2 className="text-4xl md:text-5xl font-black text-white mb-4 tracking-tight">
-                    Work <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-blue-500">Experience</span>
-                  </h2>
-                  <p className="text-slate-400 text-lg max-w-xl">
-                    My professional journey building scalable systems and solving complex engineering challenges.
-                  </p>
-               </div>
-           </RevealOnScroll>
-           <RevealOnScroll direction="left" delay={200}>
-               <div className="hidden md:block p-4 bg-slate-900/50 rounded-2xl border border-slate-800 shadow-[0_0_20px_rgba(16,185,129,0.1)]">
-                  <Briefcase className="w-8 h-8 text-emerald-500" />
-               </div>
-           </RevealOnScroll>
-        </div>
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <RevealOnScroll direction="bottom">
+            <div className="mb-16">
+                 <h2 className="text-4xl md:text-5xl font-black text-white mb-6 tracking-tight">
+                    Work <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-500">Experience</span>
+                </h2>
+                <p className="text-slate-400 text-lg max-w-2xl">
+                    My professional journey in building scalable systems and solving complex engineering problems.
+                </p>
+            </div>
+        </RevealOnScroll>
 
         <div className="relative">
-          {/* Main Vertical Beam - Enhanced to look like a laser */}
-          <div className="absolute left-[28px] md:left-[50%] top-0 bottom-0 w-[2px] bg-slate-800 md:-translate-x-1/2"></div>
-          <div className="absolute left-[28px] md:left-[50%] top-0 bottom-0 w-[2px] overflow-hidden md:-translate-x-1/2">
-             <div className="absolute top-0 left-0 w-full h-[30%] bg-gradient-to-b from-transparent via-emerald-500 to-transparent animate-beam opacity-70"></div>
-          </div>
-          {/* Glow effect behind line */}
-          <div className="absolute left-[28px] md:left-[50%] top-0 bottom-0 w-[6px] bg-emerald-500/10 blur-[4px] md:-translate-x-1/2 pointer-events-none"></div>
+            {/* Timeline Line */}
+            <div className="absolute left-[19px] top-4 bottom-0 w-0.5 bg-gradient-to-b from-emerald-500 via-slate-700 to-slate-800 md:left-1/2 md:-ml-0.5"></div>
 
-          <div className="space-y-16">
-            {EXPERIENCE.map((job, index) => (
-              <div 
-                key={index} 
-                className={`relative flex flex-col md:flex-row gap-8 md:gap-0 ${index % 2 === 0 ? 'md:flex-row-reverse' : ''}`}
-              >
-                {/* Timeline Node (Center) */}
-                <div className="absolute left-[28px] md:left-[50%] top-0 md:-translate-x-1/2 flex items-center justify-center z-20">
-                    <RevealOnScroll delay={index * 200} direction="bottom">
-                        <div className="w-14 h-14 rounded-full bg-[#020617] border-4 border-slate-800 flex items-center justify-center shadow-[0_0_20px_rgba(0,0,0,0.5)] group hover:border-emerald-500 transition-colors duration-500 relative">
-                            {/* Pulse Effect */}
-                            <div className="absolute inset-0 rounded-full border border-emerald-500/0 group-hover:border-emerald-500/50 group-hover:scale-125 transition-all duration-500"></div>
-                            <div className="w-3 h-3 rounded-full bg-emerald-500 group-hover:animate-ping"></div>
-                            <div className="absolute inset-0 rounded-full bg-emerald-500/20 blur-md opacity-0 group-hover:opacity-100 transition-opacity"></div>
+            <div className="space-y-12">
+                {EXPERIENCE.map((job, index) => (
+                  <RevealOnScroll key={index} delay={index * 100} direction="bottom" className="w-full">
+                    <div className={`relative flex flex-col md:flex-row gap-8 items-center ${index % 2 === 0 ? 'md:flex-row-reverse' : ''}`}>
+                        
+                        {/* 1. Timeline Dot */}
+                        <div className="absolute left-0 md:left-1/2 md:-translate-x-1/2 w-10 h-10 rounded-full bg-[#020617] border-4 border-slate-800 flex items-center justify-center z-10 shadow-xl group-hover:border-emerald-500 transition-colors duration-300">
+                             <div className="w-3 h-3 rounded-full bg-emerald-500 shadow-[0_0_10px_#10b981]"></div>
                         </div>
-                    </RevealOnScroll>
-                </div>
 
-                {/* Content Card Side */}
-                <div className="w-full md:w-[50%] pl-20 md:pl-0 md:px-12">
-                   <RevealOnScroll delay={index * 200 + 100} direction={index % 2 === 0 ? "left" : "right"}>
-                       {/* Strictly left aligned text for readability */}
-                       <div className={`group relative bg-slate-900/60 backdrop-blur-md p-8 rounded-3xl border border-slate-800 hover:border-emerald-500/40 transition-all duration-300 hover:shadow-[0_0_40px_-10px_rgba(16,185,129,0.1)] hover:-translate-y-1 text-left`}>
-                          
-                          {/* Connector Line (Desktop) - Points to center */}
-                          <div className={`hidden md:block absolute top-7 w-12 h-[2px] bg-gradient-to-r from-slate-800 to-transparent group-hover:from-emerald-500/50 transition-colors ${index % 2 === 0 ? '-left-12' : '-right-12 rotate-180'}`}></div>
+                        {/* 2. Empty Space for layout balance */}
+                        <div className="hidden md:block w-1/2"></div>
 
-                          <div className={`flex flex-col gap-2 mb-6 items-start`}>
-                             <h3 className="text-2xl font-bold text-white group-hover:text-emerald-300 transition-colors">{job.role}</h3>
-                             <h4 className="text-xl text-slate-400 font-medium">{job.company}</h4>
-                             <div className="inline-flex items-center gap-2 px-3 py-1 bg-slate-950/50 rounded-lg border border-slate-700/50 text-sm font-mono text-emerald-400 mt-2 shadow-inner">
-                                <Calendar className="w-3.5 h-3.5" />
-                                {job.period}
-                             </div>
-                          </div>
+                        {/* 3. Content Card */}
+                        <div className="w-full md:w-1/2 pl-12 md:pl-0">
+                            <div className={`group relative bg-slate-900/40 backdrop-blur-sm border border-slate-800/60 p-6 rounded-2xl hover:bg-slate-900/60 hover:border-emerald-500/30 transition-all duration-300 shadow-lg ${index % 2 === 0 ? 'md:mr-12' : 'md:ml-12'}`}>
+                                {/* Gradient Hover Effect */}
+                                <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-2xl pointer-events-none"></div>
 
-                          <ul className="space-y-3">
-                            {job.description.map((desc, i) => (
-                              <li key={i} className="text-slate-300 leading-relaxed text-sm flex gap-3">
-                                <div className="mt-1.5 min-w-[6px] h-1.5 rounded-full bg-slate-600 group-hover:bg-emerald-400 transition-colors"></div>
-                                <span>{desc}</span>
-                              </li>
-                            ))}
-                          </ul>
-                       </div>
-                   </RevealOnScroll>
-                </div>
-                
-                {/* Empty Side for Balance */}
-                <div className="w-full md:w-[50%] hidden md:block"></div>
-              </div>
-            ))}
-          </div>
+                                <div className="relative z-10">
+                                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
+                                        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-bold font-mono">
+                                            <Calendar className="w-3 h-3" />
+                                            {job.period}
+                                        </div>
+                                    </div>
+                                    
+                                    <h3 className="text-xl font-bold text-white mb-1 group-hover:text-emerald-400 transition-colors flex items-center gap-2">
+                                        <Briefcase className="w-4 h-4 text-slate-500 group-hover:text-emerald-500" />
+                                        {job.role}
+                                    </h3>
+                                    <h4 className="text-base font-semibold text-slate-400 mb-4 border-b border-slate-800 pb-2">{job.company}</h4>
+                                    
+                                    <ul className="space-y-2.5 mb-6">
+                                        {job.description.map((desc, i) => (
+                                            <li key={i} className="text-sm text-slate-300 leading-relaxed flex items-start gap-2.5">
+                                                <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-emerald-500 flex-shrink-0 opacity-60"></span>
+                                                {desc}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                    
+                                    {/* Tech Badge Logic (Simple Check based on description or hardcoded if available) */}
+                                    <div className="flex flex-wrap gap-2 pt-2 border-t border-slate-800/50">
+                                         {/* We generate tags based on common keywords found in description for visual flair */}
+                                         {['Java', '.NET', 'React', 'Node.js', 'SQL', 'CMS', 'PHP', 'Python', 'Web'].map(tech => {
+                                             const allText = job.description.join(' ').toLowerCase();
+                                             if (allText.includes(tech.toLowerCase())) {
+                                                 return (
+                                                     <span key={tech} className="px-2 py-1 rounded-md bg-slate-800 text-slate-400 text-[10px] font-bold uppercase tracking-wider border border-slate-700">
+                                                         {tech}
+                                                     </span>
+                                                 )
+                                             }
+                                             return null;
+                                         })}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                  </RevealOnScroll>
+                ))}
+            </div>
         </div>
       </div>
     </section>

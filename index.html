@@ -6,7 +6,7 @@
     <title>Bui Xuan Viet | FullStack Developer</title>
     <meta name="description" content="Portfolio of Bui Xuan Viet, a Backend-focused FullStack Developer." />
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
     <script>
       tailwind.config = {
         theme: {
@@ -15,29 +15,16 @@
               sans: ['Inter', 'sans-serif'],
               mono: ['JetBrains Mono', 'monospace'],
             },
-            colors: {
-              slate: {
-                850: '#151f32',
-                900: '#0f172a',
-                950: '#020617',
-              },
-              emerald: {
-                450: '#10b981',
-              }
-            },
             animation: {
               'blob': 'blob 10s infinite',
-              'shimmer': 'shimmer 2.5s linear infinite',
-              'marquee': 'marquee 40s linear infinite',
-              'meteor': 'meteor 5s linear infinite',
-              'beam': 'beam 2s linear infinite',
-              'border-rotate': 'border-rotate 4s linear infinite',
               'float': 'float 6s ease-in-out infinite',
-              'fade-in-up': 'fadeInUp 0.8s ease-out forwards',
-              'scroll': 'scroll 2s ease-in-out infinite',
-              'scan': 'scan 8s linear infinite',
-              'border-beam': 'border-beam 12s linear infinite',
-              'background-shine': 'background-shine 2s linear infinite',
+              'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+              'gradient-x': 'gradient-x 15s ease infinite',
+              'shimmer': 'shimmer 2s linear infinite',
+              'glitch': 'glitch 1s linear infinite',
+              'grid-flow': 'grid-flow 20s linear infinite',
+              'meteor': 'meteor 5s linear infinite',
+              'twinkle': 'twinkle 3s ease-in-out infinite',
             },
             keyframes: {
               blob: {
@@ -46,50 +33,39 @@
                 '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
                 '100%': { transform: 'translate(0px, 0px) scale(1)' },
               },
+              float: {
+                '0%, 100%': { transform: 'translateY(0)' },
+                '50%': { transform: 'translateY(-10px)' },
+              },
+              'gradient-x': {
+                '0%, 100%': {
+                    'background-size': '200% 200%',
+                    'background-position': 'left center'
+                },
+                '50%': {
+                    'background-size': '200% 200%',
+                    'background-position': 'right center'
+                },
+              },
               shimmer: {
                 from: { backgroundPosition: '0 0' },
                 to: { backgroundPosition: '-200% 0' },
               },
-              marquee: {
-                from: { transform: 'translateX(0)' },
-                to: { transform: 'translateX(-100%)' },
+              'grid-flow': {
+                '0%': { transform: 'translateY(0)' },
+                '100%': { transform: 'translateY(40px)' },
               },
               meteor: {
                 "0%": { transform: "rotate(215deg) translateX(0)", opacity: "1" },
                 "70%": { opacity: "1" },
-                "100%": { transform: "rotate(215deg) translateX(-500px)", opacity: "0" },
+                "100%": {
+                  transform: "rotate(215deg) translateX(-500px)",
+                  opacity: "0",
+                },
               },
-              beam: {
-                '0%': { top: '-100%' },
-                '100%': { top: '100%' },
-              },
-              'border-rotate': {
-                '0%': { backgroundPosition: '0% 50%' },
-                '50%': { backgroundPosition: '100% 50%' },
-                '100%': { backgroundPosition: '0% 50%' },
-              },
-              float: {
-                '0%, 100%': { transform: 'translateY(0)' },
-                '50%': { transform: 'translateY(-20px)' },
-              },
-              fadeInUp: {
-                '0%': { opacity: '0', transform: 'translateY(40px)' },
-                '100%': { opacity: '1', transform: 'translateY(0)' },
-              },
-              scroll: {
-                '0%': { opacity: '1', transform: 'translateY(0)' },
-                '100%': { opacity: '0', transform: 'translateY(10px)' },
-              },
-              scan: {
-                '0%': { top: '-10%' },
-                '100%': { top: '100%' },
-              },
-              'border-beam': {
-                '100%': { 'offset-distance': '100%' },
-              },
-              'background-shine': {
-                'from': { backgroundPosition: '0 0' },
-                'to': { backgroundPosition: '-200% 0' }
+              twinkle: {
+                  "0%, 100%": { opacity: "1", transform: "scale(1)" },
+                  "50%": { opacity: "0.3", transform: "scale(0.8)" },
               }
             }
           }
@@ -98,162 +74,79 @@
     </script>
     <style>
       body {
-        background-color: #020617;
-        color: #e2e8f0;
+        background-color: #020617; /* Slate 950 */
+        color: #e2e8f0; /* Slate 200 */
         cursor: default;
       }
       
-      /* Noise Texture Overlay */
+      /* Global Noise Texture */
       .bg-noise {
         position: fixed;
         top: 0;
         left: 0;
-        width: 100vw;
-        height: 100vh;
+        width: 100%;
+        height: 100%;
         pointer-events: none;
-        z-index: 20; /* Reduced from 50 to 20 to avoid covering high-z-index elements */
-        opacity: 0.04;
+        z-index: 50;
+        opacity: 0.03;
         background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
       }
 
-      /* Improved Scrollbar */
       ::-webkit-scrollbar { width: 6px; }
       ::-webkit-scrollbar-track { background: #020617; }
-      ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 10px; border: 1px solid #334155; }
-      ::-webkit-scrollbar-thumb:hover { background: #10b981; }
+      ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 10px; }
+      ::-webkit-scrollbar-thumb:hover { background: #334155; }
 
       html {
         scroll-behavior: smooth;
         scroll-padding-top: 5rem;
       }
       
-      /* Premium Glass Effect */
-      .glass-panel {
-        background: rgba(15, 23, 42, 0.6);
-        backdrop-filter: blur(16px);
-        -webkit-backdrop-filter: blur(16px);
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-      }
-
-      /* Spotlight Card Effect */
-      .spotlight-card {
-        position: relative;
-        overflow: hidden;
-        background: rgba(15, 23, 42, 0.4);
-        border: 1px solid rgba(255, 255, 255, 0.05);
-      }
+      /* 3D Tilt */
+      .perspective-1000 { perspective: 1000px; }
+      .transform-style-3d { transform-style: preserve-3d; }
       
-      .spotlight-card::before {
-        content: "";
-        position: absolute;
-        top: 0; left: 0; right: 0; bottom: 0;
-        background: radial-gradient(800px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 255, 255, 0.06), transparent 40%);
-        opacity: 0;
-        transition: opacity 0.5s;
-        pointer-events: none;
-        z-index: 10;
-        border-radius: inherit;
-      }
-      
-      .spotlight-card:hover::before {
-        opacity: 1;
-      }
-      
-      .spotlight-card::after {
-        content: "";
-        position: absolute;
-        top: 0; left: 0; right: 0; bottom: 0;
-        background: radial-gradient(600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(16, 185, 129, 0.1), transparent 40%);
-        opacity: 0;
-        transition: opacity 0.5s;
-        pointer-events: none;
-        z-index: 10;
-        border-radius: inherit;
-      }
-      
-      .spotlight-card:hover::after {
-        opacity: 1;
-      }
-
-      /* Animated Gradient Border */
-      .animated-border {
-        position: relative;
-        border: double 1px transparent;
-        border-radius: 0.75rem;
-        background-image: linear-gradient(#0d1117, #0d1117), 
-                          linear-gradient(90deg, #10b981, #3b82f6, #8b5cf6, #10b981);
-        background-origin: border-box;
-        background-clip: padding-box, border-box;
-        background-size: 200% 200%;
-        animation: border-rotate 4s linear infinite;
-      }
-      
-      /* Typewriter Cursor */
-      .typewriter-cursor::after {
-        content: '|';
-        animation: cursor-blink 1s step-start infinite;
-      }
-      
-      @keyframes cursor-blink {
-        50% { opacity: 0; }
-      }
-
-      /* Text Selection */
-      ::selection {
-        background: rgba(16, 185, 129, 0.2);
-        color: #10b981;
-      }
-
-      /* --- UPDATED REVEAL ANIMATIONS (PREMIUM) --- */
+      /* Reveal Animations */
       .reveal-hidden {
         opacity: 0;
-        transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1); /* Smooth spring-like easing */
+        transition: all 0.8s cubic-bezier(0.17, 0.55, 0.55, 1);
+        will-change: opacity, transform;
       }
+      .reveal-hidden-bottom { transform: translateY(30px); }
+      .reveal-hidden-left { transform: translateX(-30px); }
+      .reveal-hidden-right { transform: translateX(30px); }
+      .reveal-visible { opacity: 1; transform: translate(0, 0); }
 
-      /* Combine transform with scale for "Pop" effect */
-      .reveal-hidden-bottom {
-        transform: translateY(40px) scale(0.95);
-      }
-      
-      .reveal-hidden-left {
-        transform: translateX(-40px) scale(0.95);
-      }
-
-      .reveal-hidden-right {
-        transform: translateX(40px) scale(0.95);
-      }
-      
-      .reveal-visible {
-        opacity: 1;
-        transform: translate(0, 0) scale(1);
-      }
-
-      /* Magic Border Effect */
-      .magic-border {
-        position: relative;
-        background: #0f172a; 
-        border-radius: inherit;
-      }
-      
-      .magic-border::before {
-        content: "";
+      /* Glitch Effect */
+      .glitch-wrapper { position: relative; }
+      .glitch-text { position: relative; }
+      .glitch-text::before, .glitch-text::after {
+        content: attr(data-text);
         position: absolute;
-        inset: -1px;
-        z-index: -1;
-        border-radius: inherit;
-        background: radial-gradient(
-          400px circle at var(--mouse-x) var(--mouse-y),
-          rgba(16, 185, 129, 0.6),
-          transparent 40%
-        );
-        opacity: 0;
-        transition: opacity 0.5s;
+        top: 0; left: 0; width: 100%; height: 100%;
+      }
+      .glitch-text::before {
+        left: 2px; text-shadow: -1px 0 #00ffff; clip-path: inset(24% 0 29% 0);
+        animation: glitch-anim-1 2.5s infinite linear alternate-reverse;
+      }
+      .glitch-text::after {
+        left: -2px; text-shadow: -1px 0 #ff00ff; clip-path: inset(85% 0 1% 0);
+        animation: glitch-anim-2 3s infinite linear alternate-reverse;
+      }
+      @keyframes glitch-anim-1 {
+        0% { clip-path: inset(20% 0 80% 0); } 100% { clip-path: inset(30% 0 20% 0); }
+      }
+      @keyframes glitch-anim-2 {
+        0% { clip-path: inset(10% 0 60% 0); } 100% { clip-path: inset(5% 0 90% 0); }
       }
       
-      .magic-border:hover::before {
-        opacity: 1;
+      /* Magic Border */
+      .magic-border::after {
+        content: ""; position: absolute; top: 0; left: 0; height: 100%; width: 100%;
+        background: radial-gradient(400px circle at var(--mouse-x) var(--mouse-y), rgba(16, 185, 129, 0.4), transparent 40%);
+        z-index: 0; border-radius: inherit; pointer-events: none; opacity: 0; transition: opacity 0.5s;
       }
+      .magic-card:hover .magic-border::after { opacity: 1; }
     </style>
   <script type="importmap">
 {
@@ -269,6 +162,7 @@
 </script>
 </head>
   <body>
+    <div class="bg-noise"></div>
     <div id="root"></div>
     <script type="module" src="/index.tsx"></script>
   </body>
