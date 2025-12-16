@@ -1,43 +1,73 @@
 import React from 'react';
-import { GraduationCap, Award } from 'lucide-react';
+import { GraduationCap, Award, Calendar } from 'lucide-react';
 import { EDUCATION } from '../constants';
+import RevealOnScroll from './RevealOnScroll';
 
 const Education: React.FC = () => {
   return (
-    <section id="education" className="py-20 bg-slate-950 border-t border-slate-900/50">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Education</h2>
-          <div className="h-1 w-16 bg-gradient-to-r from-emerald-500 to-blue-500 mx-auto rounded-full"></div>
+    <section id="education" className="py-24 bg-[#020617] relative">
+       {/* Ambient Light */}
+       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-emerald-500/5 blur-[100px] rounded-full pointer-events-none"></div>
+
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="flex items-center justify-center gap-4 mb-16">
+            <div className="h-px w-12 bg-slate-800"></div>
+            <span className="text-slate-500 text-sm font-bold uppercase tracking-widest">Academic Background</span>
+            <div className="h-px w-12 bg-slate-800"></div>
         </div>
 
-        <div className="group relative bg-slate-900 rounded-2xl p-8 border border-slate-800 overflow-hidden hover:border-emerald-500/30 transition-all duration-300 hover:shadow-2xl hover:shadow-emerald-900/20">
-            <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-            
-            <div className="absolute top-0 right-0 p-8 opacity-5 transform group-hover:scale-110 transition-transform duration-700">
-                <GraduationCap className="w-64 h-64 text-white" />
-            </div>
-            
-            <div className="relative z-10 flex flex-col md:flex-row items-start md:items-center gap-8">
-                <div className="bg-gradient-to-br from-emerald-500/10 to-blue-500/10 p-5 rounded-2xl border border-emerald-500/20">
-                    <GraduationCap className="w-12 h-12 text-emerald-400" />
-                </div>
+        {/* Certificate Card */}
+        <RevealOnScroll direction="bottom">
+            <div className="relative group">
+                <div className="absolute -inset-1 bg-gradient-to-r from-emerald-500 via-blue-500 to-emerald-500 rounded-2xl opacity-20 group-hover:opacity-40 blur transition duration-500"></div>
                 
-                <div className="flex-1">
-                    <h3 className="text-2xl font-bold text-white mb-2 group-hover:text-emerald-300 transition-colors">{EDUCATION.school}</h3>
-                    <p className="text-lg text-emerald-400 font-medium mb-1">{EDUCATION.major}</p>
-                    <p className="text-slate-400 font-mono text-sm">{EDUCATION.period}</p>
-                </div>
+                <div className="relative bg-[#0a0f1c] rounded-2xl border border-slate-800 p-8 md:p-12 overflow-hidden">
+                    {/* Background Pattern */}
+                    <div className="absolute inset-0 opacity-5 bg-[radial-gradient(#ffffff_1px,transparent_1px)] [background-size:16px_16px]"></div>
+                    
+                    {/* Giant Watermark */}
+                    <GraduationCap className="absolute -right-12 -top-12 w-96 h-96 text-slate-800/20 rotate-12 pointer-events-none" />
 
-                <div className="bg-slate-950/50 px-6 py-4 rounded-xl border border-slate-700 group-hover:border-emerald-500/30 transition-colors">
-                    <div className="flex items-center gap-2 mb-1">
-                        <Award className="w-4 h-4 text-yellow-500" />
-                        <span className="text-slate-400 text-xs uppercase tracking-wider font-bold">GPA Score</span>
+                    <div className="relative z-10 flex flex-col md:flex-row gap-10 items-center md:items-start text-center md:text-left">
+                        
+                        {/* Icon Box */}
+                        <div className="flex-shrink-0">
+                            <div className="w-24 h-24 rounded-2xl bg-slate-900 border border-slate-700 flex items-center justify-center shadow-2xl relative group-hover:scale-105 transition-transform duration-500">
+                                <div className="absolute inset-0 bg-emerald-500/10 rounded-2xl animate-pulse"></div>
+                                <GraduationCap className="w-10 h-10 text-emerald-400" />
+                                
+                                {/* Decorative Corner accents */}
+                                <div className="absolute top-0 left-0 w-2 h-2 border-t-2 border-l-2 border-emerald-500/50 rounded-tl-md"></div>
+                                <div className="absolute top-0 right-0 w-2 h-2 border-t-2 border-r-2 border-emerald-500/50 rounded-tr-md"></div>
+                                <div className="absolute bottom-0 left-0 w-2 h-2 border-b-2 border-l-2 border-emerald-500/50 rounded-bl-md"></div>
+                                <div className="absolute bottom-0 right-0 w-2 h-2 border-b-2 border-r-2 border-emerald-500/50 rounded-br-md"></div>
+                            </div>
+                        </div>
+
+                        {/* Content */}
+                        <div className="flex-1 space-y-6">
+                            <div>
+                                <h3 className="text-3xl font-bold text-white mb-2 tracking-tight">{EDUCATION.school}</h3>
+                                <div className="text-xl text-emerald-400 font-medium">{EDUCATION.major}</div>
+                            </div>
+
+                            <div className="flex flex-col md:flex-row gap-4 md:gap-8 justify-center md:justify-start">
+                                <div className="flex items-center gap-2 text-slate-400 bg-slate-900/50 px-4 py-2 rounded-lg border border-slate-800/50">
+                                    <Calendar className="w-4 h-4" />
+                                    <span className="text-sm font-mono">{EDUCATION.period}</span>
+                                </div>
+                                
+                                <div className="flex items-center gap-2 text-yellow-500 bg-yellow-500/5 px-4 py-2 rounded-lg border border-yellow-500/10">
+                                    <Award className="w-4 h-4" />
+                                    <span className="text-sm font-bold">GPA: {EDUCATION.gpa}</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div className="text-3xl font-extrabold text-white tracking-tight">{EDUCATION.gpa}</div>
+
                 </div>
             </div>
-        </div>
+        </RevealOnScroll>
       </div>
     </section>
   );

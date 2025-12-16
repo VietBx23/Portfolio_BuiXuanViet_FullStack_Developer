@@ -7,6 +7,7 @@ import Experience from './components/Experience';
 import Projects from './components/Projects';
 import Education from './components/Education';
 import Footer from './components/Footer';
+import FloatingActions from './components/FloatingActions';
 
 // Background Meteors Component
 const Meteors = () => {
@@ -36,6 +37,7 @@ function App() {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    // Mouse movement effect
     const handleMouseMove = (event: MouseEvent) => {
       if (!containerRef.current) return;
       const { clientX, clientY } = event;
@@ -44,6 +46,7 @@ function App() {
     };
 
     window.addEventListener('mousemove', handleMouseMove);
+
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
     };
@@ -52,7 +55,7 @@ function App() {
   return (
     <div 
       ref={containerRef}
-      className="min-h-screen bg-[#020617] text-slate-200 font-sans selection:bg-emerald-500/30 selection:text-emerald-200 relative overflow-hidden"
+      className="min-h-screen bg-[#020617] text-slate-200 font-sans selection:bg-emerald-500/30 selection:text-emerald-200 relative overflow-x-hidden"
     >
       {/* Global Texture */}
       <div className="bg-noise"></div>
@@ -67,9 +70,15 @@ function App() {
                 WebkitMaskImage: 'radial-gradient(circle at var(--x, 50%) var(--y, 50%), black 0%, transparent 45%)'
             }}
         ></div>
+        
         {/* Dimmer Grid for the rest */}
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808005_1px,transparent_1px),linear-gradient(to_bottom,#80808005_1px,transparent_1px)] bg-[size:24px_24px]"></div>
         
+        {/* Scanning Beam Effect - Adds dynamic movement to the grid */}
+        <div className="absolute inset-0 z-0 overflow-hidden">
+             <div className="w-full h-[5px] bg-gradient-to-r from-transparent via-emerald-500/20 to-transparent blur-sm absolute top-[-10%] animate-scan"></div>
+        </div>
+
         {/* Glow Spots */}
         <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-emerald-500/10 rounded-full blur-[120px] animate-blob"></div>
         <div className="absolute top-[20%] right-[-10%] w-[30%] h-[30%] bg-blue-500/10 rounded-full blur-[120px] animate-blob animation-delay-2000"></div>
@@ -82,7 +91,9 @@ function App() {
       <div className="relative z-10">
         <Header />
         <main>
+          {/* Hero section */}
           <Hero />
+          
           <Skills />
           <Experience />
           <Projects />
@@ -90,6 +101,7 @@ function App() {
           <Education />
         </main>
         <Footer />
+        <FloatingActions />
       </div>
     </div>
   );

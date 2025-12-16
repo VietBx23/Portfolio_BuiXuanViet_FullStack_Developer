@@ -203,7 +203,7 @@ const Hero: React.FC = () => {
     <section id="home" className="relative pt-32 lg:pt-48 overflow-hidden min-h-screen flex flex-col justify-center">
       
       {/* Subtle Background Glows */}
-      <div className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/2 w-[800px] h-[800px] bg-emerald-500/5 rounded-full blur-[120px] pointer-events-none"></div>
+      <div className="absolute top-0 right-0 -translate-x-1/2 translate-x-1/2 w-[800px] h-[800px] bg-emerald-500/5 rounded-full blur-[120px] pointer-events-none"></div>
       <div className="absolute bottom-0 left-0 translate-y-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-blue-500/5 rounded-full blur-[120px] pointer-events-none"></div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full mb-12">

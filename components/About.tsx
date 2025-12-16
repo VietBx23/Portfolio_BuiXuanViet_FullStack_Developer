@@ -1,78 +1,161 @@
 import React from 'react';
-import { Target, Rocket, User, MapPin, Coffee, Code } from 'lucide-react';
+import { Target, Rocket, User, MapPin, Coffee, Code, Sparkles, Brain } from 'lucide-react';
 import { SUMMARY, CAREER_GOALS, PERSONAL_INFO } from '../constants';
+import RevealOnScroll from './RevealOnScroll';
 
 const About: React.FC = () => {
-  return (
-    <section id="about" className="py-24 relative overflow-hidden">
-      {/* Background Decor */}
-      <div className="absolute right-0 top-0 w-1/2 h-full bg-gradient-to-l from-slate-900/50 to-transparent -z-10"></div>
+  // Magic border effect handler
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const { currentTarget: target } = e;
+    for(const card of target.getElementsByClassName("magic-card") as HTMLCollectionOf<HTMLElement>) {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        card.style.setProperty("--mouse-x", `${x}px`);
+        card.style.setProperty("--mouse-y", `${y}px`);
+    }
+  };
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="mb-16">
-          <h2 className="text-4xl font-bold text-white mb-4">About Me</h2>
-          <div className="h-1 w-20 bg-emerald-500 rounded-full"></div>
+  return (
+    <section id="about" className="py-32 relative overflow-hidden bg-slate-950">
+      
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10" onMouseMove={handleMouseMove}>
+        <div className="mb-20">
+          <RevealOnScroll direction="bottom">
+            <h2 className="text-4xl md:text-5xl font-black text-white mb-6 tracking-tight">
+                Beyond the <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400">Code</span>
+            </h2>
+          </RevealOnScroll>
+          <RevealOnScroll delay={200} direction="bottom">
+            <p className="text-slate-400 text-lg max-w-2xl">
+                I don't just write functions; I architect solutions. Here's a glimpse into my professional philosophy and future trajectory.
+            </p>
+          </RevealOnScroll>
         </div>
 
-        {/* Bento Grid Layout */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {/* Bento Grid Layout - Magic Card Style */}
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
           
-          {/* Main Summary Block - Spans 2 cols */}
-          <div className="md:col-span-2 bg-slate-900/50 backdrop-blur-sm border border-slate-800 rounded-3xl p-8 hover:border-emerald-500/30 transition-all duration-300">
-             <div className="flex items-center gap-3 mb-6">
-                <div className="p-2 bg-emerald-500/10 rounded-lg">
-                  <User className="h-6 w-6 text-emerald-400" />
+          {/* Main Summary Block - Spans 8 cols */}
+          <div className="md:col-span-8">
+              <RevealOnScroll delay={100} className="h-full">
+                <div className="group h-full relative rounded-3xl bg-slate-900 border border-slate-800 overflow-hidden magic-card magic-border">
+                    <div className="relative h-full p-8 md:p-10 flex flex-col justify-between z-10">
+                        <div className="flex items-start justify-between mb-6">
+                            <div className="p-3 bg-emerald-500/10 rounded-2xl border border-emerald-500/20">
+                                <User className="h-8 w-8 text-emerald-400" />
+                            </div>
+                            <span className="px-3 py-1 rounded-full bg-slate-800 text-xs font-mono text-slate-400 border border-slate-700">BIO.txt</span>
+                        </div>
+                        
+                        <div>
+                            <h3 className="text-2xl font-bold text-white mb-4">The Architect's Mindset</h3>
+                            <p className="text-slate-300 leading-relaxed text-lg font-light">
+                                {SUMMARY}
+                            </p>
+                        </div>
+                    </div>
                 </div>
-                <h3 className="text-2xl font-bold text-white">Professional Summary</h3>
-             </div>
-            <p className="text-slate-300 leading-relaxed text-lg">
-              {SUMMARY}
-            </p>
+              </RevealOnScroll>
           </div>
 
-          {/* Location & Status */}
-          <div className="bg-slate-900/50 backdrop-blur-sm border border-slate-800 rounded-3xl p-8 flex flex-col justify-between hover:border-emerald-500/30 transition-all duration-300">
-             <div>
-                <div className="flex items-center gap-3 mb-4">
-                  <MapPin className="h-6 w-6 text-emerald-400" />
-                  <h3 className="text-xl font-bold text-white">Location</h3>
+          {/* Stats / Status - Spans 4 cols */}
+          <div className="md:col-span-4">
+              <RevealOnScroll delay={200} className="h-full">
+                <div className="group h-full relative rounded-3xl bg-slate-900 border border-slate-800 overflow-hidden magic-card magic-border">
+                    <div className="relative h-full p-8 flex flex-col justify-between z-10">
+                        <div className="space-y-6">
+                            <div className="flex items-center gap-4">
+                                <div className="w-12 h-12 rounded-full bg-blue-500/10 flex items-center justify-center border border-blue-500/20">
+                                    <MapPin className="h-5 w-5 text-blue-400" />
+                                </div>
+                                <div>
+                                    <div className="text-xs text-slate-500 uppercase font-bold tracking-wider">Base</div>
+                                    <div className="text-white font-medium">Ho Chi Minh, VN</div>
+                                </div>
+                            </div>
+                            
+                            <div className="flex items-center gap-4">
+                                <div className="w-12 h-12 rounded-full bg-purple-500/10 flex items-center justify-center border border-purple-500/20">
+                                    <Brain className="h-5 w-5 text-purple-400" />
+                                </div>
+                                <div>
+                                    <div className="text-xs text-slate-500 uppercase font-bold tracking-wider">Focus</div>
+                                    <div className="text-white font-medium">System Architecture</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="mt-8 pt-6 border-t border-slate-800/50">
+                            <div className="flex items-center justify-between">
+                                <span className="text-slate-400 text-sm">Status</span>
+                                <span className="flex items-center gap-2 text-emerald-400 text-sm font-bold bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/20">
+                                    <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                                    Available
+                                </span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <p className="text-slate-300 text-lg">{PERSONAL_INFO.location}</p>
-             </div>
-             <div className="mt-8">
-                <div className="inline-flex items-center gap-2 px-3 py-1 bg-green-500/10 text-green-400 rounded-full text-sm font-medium">
-                  <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
-                  Open to Work
-                </div>
-             </div>
+              </RevealOnScroll>
           </div>
 
-          {/* Goals Block - Spans 3 cols on mobile, 3 on desktop */}
-          <div className="md:col-span-3 grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="bg-slate-900/50 backdrop-blur-sm border border-slate-800 rounded-3xl p-8 hover:border-emerald-500/30 transition-all duration-300 group">
-              <h4 className="text-lg font-bold text-white mb-4 flex items-center gap-3">
-                <div className="p-2 bg-blue-500/10 rounded-lg group-hover:bg-blue-500/20 transition-colors">
-                    <Target className="h-5 w-5 text-blue-400" />
+          {/* Short Term Goals - Spans 6 cols */}
+          <div className="md:col-span-6">
+              <RevealOnScroll delay={300} className="h-full">
+                <div className="group h-full relative rounded-3xl bg-slate-900 border border-slate-800 overflow-hidden magic-card magic-border">
+                    <div className="relative h-full p-8 z-10">
+                        <div className="flex items-center gap-4 mb-6">
+                            <div className="p-2.5 bg-orange-500/10 rounded-xl border border-orange-500/20">
+                                <Target className="h-6 w-6 text-orange-400" />
+                            </div>
+                            <h4 className="text-xl font-bold text-white">Current Focus</h4>
+                        </div>
+                        <p className="text-slate-400 leading-relaxed">
+                            {CAREER_GOALS.shortTerm}
+                        </p>
+                        {/* Visual Progress Bar Decoration */}
+                        <div className="mt-6 space-y-2">
+                            <div className="flex justify-between text-xs text-slate-500 font-mono">
+                                <span>Backend Mastery</span>
+                                <span>85%</span>
+                            </div>
+                            <div className="h-1.5 w-full bg-slate-800 rounded-full overflow-hidden">
+                                <div className="h-full w-[85%] bg-gradient-to-r from-orange-500 to-red-500 rounded-full"></div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                Short-term Goals
-              </h4>
-              <p className="text-slate-400 leading-relaxed">
-                {CAREER_GOALS.shortTerm}
-              </p>
-            </div>
-
-            <div className="bg-slate-900/50 backdrop-blur-sm border border-slate-800 rounded-3xl p-8 hover:border-purple-500/30 transition-all duration-300 group">
-              <h4 className="text-lg font-bold text-white mb-4 flex items-center gap-3">
-                <div className="p-2 bg-purple-500/10 rounded-lg group-hover:bg-purple-500/20 transition-colors">
-                    <Rocket className="h-5 w-5 text-purple-400" />
-                </div>
-                Long-term Goals
-              </h4>
-              <p className="text-slate-400 leading-relaxed">
-                {CAREER_GOALS.longTerm}
-              </p>
-            </div>
+              </RevealOnScroll>
           </div>
+
+          {/* Long Term Goals - Spans 6 cols */}
+          <div className="md:col-span-6">
+              <RevealOnScroll delay={400} className="h-full">
+                <div className="group h-full relative rounded-3xl bg-slate-900 border border-slate-800 overflow-hidden magic-card magic-border">
+                    <div className="relative h-full p-8 z-10">
+                        <div className="flex items-center gap-4 mb-6">
+                            <div className="p-2.5 bg-cyan-500/10 rounded-xl border border-cyan-500/20">
+                                <Rocket className="h-6 w-6 text-cyan-400" />
+                            </div>
+                            <h4 className="text-xl font-bold text-white">North Star</h4>
+                        </div>
+                        <p className="text-slate-400 leading-relaxed">
+                            {CAREER_GOALS.longTerm}
+                        </p>
+                        {/* Visual Graphic Decoration */}
+                        <div className="mt-6 flex gap-2">
+                            {[1,2,3,4].map((i) => (
+                                <div key={i} className="h-1.5 flex-1 bg-slate-800 rounded-full overflow-hidden">
+                                    <div className="h-full bg-cyan-500/40 w-full animate-pulse" style={{animationDelay: `${i * 200}ms`}}></div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+              </RevealOnScroll>
+          </div>
+
         </div>
       </div>
     </section>
