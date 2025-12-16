@@ -56,7 +56,7 @@ const TechMarquee = () => {
   ];
 
   const renderItem = (tech: any, index: number | string) => (
-    <li key={index} className="flex items-center gap-3 px-4 py-2 rounded-xl bg-slate-900/30 border border-slate-800/50 hover:border-emerald-500/30 hover:bg-slate-800/50 transition-all duration-300 cursor-default group mx-4 md:mx-6">
+    <li key={index} className="flex items-center gap-3 px-4 py-2 rounded-xl bg-slate-900/30 border border-slate-800/50 hover:border-emerald-500/30 hover:bg-slate-800/50 transition-all duration-300 cursor-default group mx-4 md:mx-6 shrink-0">
       <div className="w-6 h-6 flex items-center justify-center transition-all duration-300 grayscale opacity-70 group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-110">
         {isUrl(tech.icon) ? (
           <img src={tech.icon} alt={tech.name} className="w-full h-full object-contain" />
@@ -74,11 +74,12 @@ const TechMarquee = () => {
     <div className="w-full border-t border-slate-800/50 pt-8 mt-16 pb-8 bg-slate-950/30 backdrop-blur-sm relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-r from-[#020617] via-transparent to-[#020617] z-10 pointer-events-none"></div>
       
-      <div className="flex overflow-hidden select-none mask-linear-fade">
-        <ul className="flex items-center justify-center md:justify-start animate-marquee min-w-full">
+      <div className="flex overflow-hidden select-none">
+        {/* Added shrink-0 to prevent flex items from collapsing and overlapping */}
+        <ul className="flex items-center justify-center md:justify-start animate-marquee min-w-full shrink-0">
           {techStack.map((tech, index) => renderItem(tech, index))}
         </ul>
-        <ul className="flex items-center justify-center md:justify-start animate-marquee min-w-full" aria-hidden="true">
+        <ul className="flex items-center justify-center md:justify-start animate-marquee min-w-full shrink-0" aria-hidden="true">
           {techStack.map((tech, index) => renderItem(tech, `dup-${index}`))}
         </ul>
       </div>
