@@ -76,10 +76,10 @@ const TypewriterCode = () => {
     '    public string Name = "Bui Xuan Viet";',
     '    public string Role = "Full Stack Developer";',
     '',
-    '    public string[] Backend  = { ".NET Core", "Spring Boot", "SQL", "Node.js" };',
+    '    public string[] Backend = { ".NET Core", "Spring Boot", "SQL", "Node.js" };',
     '    public string[] Frontend = { "ReactJS", "Angular", "JSP", "Tailwind" };',
-    '    public string[] Mobile   = { "React Native", "Expo", "Android" };',
-    '    public string[] Tools    = { "WordPress", "CMS Dev", "Docker", "SEO" };',
+    '    public string[] Mobile = { "React Native", "Expo", "Android" };',
+    '    public string[] Tools = { "WordPress", "CMS Dev", "Docker", "SEO" };',
     '}'
   ];
 
@@ -143,8 +143,8 @@ const TypewriterCode = () => {
     <div className="p-4 md:p-5 font-mono text-xs md:text-[13px] leading-6 md:leading-7 bg-[#0d1117] min-h-[340px] h-full overflow-hidden">
       {lines.map((line, index) => (
         <div key={index} className="flex items-start hover:bg-slate-800/30 -mx-4 px-4 md:-mx-5 md:px-5 transition-colors group min-h-[1.6rem]">
-            <span className="shrink-0 text-slate-700 w-6 md:w-8 select-none text-right pr-3 md:pr-4 border-r border-slate-800/50 mr-3 md:mr-4 font-mono group-hover:text-slate-500 transition-colors text-[10px] md:text-xs py-1">{index + 1}</span>
-            <span className={`${index === lines.length - 1 || (lines[index] !== codeLines[index]) ? 'typewriter-cursor' : ''} whitespace-pre-wrap break-words w-full`}>
+            <span className="shrink-0 text-slate-700 w-6 md:w-8 select-none text-right pr-3 md:pr-4 border-r border-slate-800/50 mr-3 md:mr-4 font-mono group-hover:text-slate-500 transition-colors text-[10px] md:text-xs py-1 mt-0.5">{index + 1}</span>
+            <span className={`flex-1 min-w-0 ${index === lines.length - 1 || (lines[index] !== codeLines[index]) ? 'typewriter-cursor' : ''} whitespace-pre-wrap break-words`}>
                {renderCodeLine(line)}
             </span>
         </div>
