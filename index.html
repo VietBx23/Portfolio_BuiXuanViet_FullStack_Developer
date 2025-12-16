@@ -6,7 +6,7 @@
     <title>Bui Xuan Viet | FullStack Developer</title>
     <meta name="description" content="Portfolio of Bui Xuan Viet, a Backend-focused FullStack Developer." />
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
     <script>
       tailwind.config = {
         theme: {
@@ -26,8 +26,15 @@
               }
             },
             animation: {
-              'blob': 'blob 7s infinite',
-              'shimmer': 'shimmer 2s linear infinite',
+              'blob': 'blob 10s infinite',
+              'shimmer': 'shimmer 2.5s linear infinite',
+              'marquee': 'marquee 40s linear infinite',
+              'meteor': 'meteor 5s linear infinite',
+              'beam': 'beam 2s linear infinite',
+              'border-rotate': 'border-rotate 4s linear infinite',
+              'float': 'float 6s ease-in-out infinite',
+              'fade-in-up': 'fadeInUp 0.8s ease-out forwards',
+              'scroll': 'scroll 2s ease-in-out infinite',
             },
             keyframes: {
               blob: {
@@ -39,6 +46,36 @@
               shimmer: {
                 from: { backgroundPosition: '0 0' },
                 to: { backgroundPosition: '-200% 0' },
+              },
+              marquee: {
+                from: { transform: 'translateX(0)' },
+                to: { transform: 'translateX(-100%)' },
+              },
+              meteor: {
+                "0%": { transform: "rotate(215deg) translateX(0)", opacity: "1" },
+                "70%": { opacity: "1" },
+                "100%": { transform: "rotate(215deg) translateX(-500px)", opacity: "0" },
+              },
+              beam: {
+                '0%': { top: '-100%' },
+                '100%': { top: '100%' },
+              },
+              'border-rotate': {
+                '0%': { backgroundPosition: '0% 50%' },
+                '50%': { backgroundPosition: '100% 50%' },
+                '100%': { backgroundPosition: '0% 50%' },
+              },
+              float: {
+                '0%, 100%': { transform: 'translateY(0)' },
+                '50%': { transform: 'translateY(-20px)' },
+              },
+              fadeInUp: {
+                '0%': { opacity: '0', transform: 'translateY(20px)' },
+                '100%': { opacity: '1', transform: 'translateY(0)' },
+              },
+              scroll: {
+                '0%': { opacity: '1', transform: 'translateY(0)' },
+                '100%': { opacity: '0', transform: 'translateY(10px)' },
               }
             }
           }
@@ -49,6 +86,7 @@
       body {
         background-color: #020617;
         color: #e2e8f0;
+        cursor: default;
       }
       
       /* Noise Texture Overlay */
@@ -60,32 +98,97 @@
         height: 100vh;
         pointer-events: none;
         z-index: 50;
-        opacity: 0.03;
+        opacity: 0.04;
         background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
       }
 
-      /* Grid Background Pattern */
-      .bg-grid-pattern {
-        background-size: 30px 30px;
-        background-image: linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-                          linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
-        mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
-        -webkit-mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
-      }
-
-      /* Scrollbar */
+      /* Improved Scrollbar */
       ::-webkit-scrollbar { width: 6px; }
       ::-webkit-scrollbar-track { background: #020617; }
-      ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 3px; }
-      ::-webkit-scrollbar-thumb:hover { background: #334155; }
+      ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 10px; border: 1px solid #334155; }
+      ::-webkit-scrollbar-thumb:hover { background: #10b981; }
 
       html {
         scroll-behavior: smooth;
         scroll-padding-top: 5rem;
       }
       
-      .text-glow {
-        text-shadow: 0 0 20px rgba(16, 185, 129, 0.5);
+      /* Premium Glass Effect */
+      .glass-panel {
+        background: rgba(15, 23, 42, 0.6);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+      }
+
+      /* Spotlight Card Effect */
+      .spotlight-card {
+        position: relative;
+        overflow: hidden;
+        background: rgba(15, 23, 42, 0.4);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+      }
+      
+      .spotlight-card::before {
+        content: "";
+        position: absolute;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: radial-gradient(800px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 255, 255, 0.06), transparent 40%);
+        opacity: 0;
+        transition: opacity 0.5s;
+        pointer-events: none;
+        z-index: 10;
+        border-radius: inherit;
+      }
+      
+      .spotlight-card:hover::before {
+        opacity: 1;
+      }
+      
+      .spotlight-card::after {
+        content: "";
+        position: absolute;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: radial-gradient(600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(16, 185, 129, 0.1), transparent 40%);
+        opacity: 0;
+        transition: opacity 0.5s;
+        pointer-events: none;
+        z-index: 10;
+        border-radius: inherit;
+      }
+      
+      .spotlight-card:hover::after {
+        opacity: 1;
+      }
+
+      /* Animated Gradient Border */
+      .animated-border {
+        position: relative;
+        border: double 1px transparent;
+        border-radius: 0.75rem;
+        background-image: linear-gradient(#0d1117, #0d1117), 
+                          linear-gradient(90deg, #10b981, #3b82f6, #8b5cf6, #10b981);
+        background-origin: border-box;
+        background-clip: padding-box, border-box;
+        background-size: 200% 200%;
+        animation: border-rotate 4s linear infinite;
+      }
+      
+      /* Typewriter Cursor */
+      .typewriter-cursor::after {
+        content: '|';
+        animation: cursor-blink 1s step-start infinite;
+      }
+      
+      @keyframes cursor-blink {
+        50% { opacity: 0; }
+      }
+
+      /* Text Selection */
+      ::selection {
+        background: rgba(16, 185, 129, 0.2);
+        color: #10b981;
       }
     </style>
   <script type="importmap">
@@ -94,7 +197,9 @@
     "react-dom/": "https://esm.sh/react-dom@^18.2.0/",
     "react/": "https://esm.sh/react@^18.2.0/",
     "react": "https://esm.sh/react@^18.2.0",
-    "lucide-react": "https://esm.sh/lucide-react@^0.292.0"
+    "lucide-react": "https://esm.sh/lucide-react@^0.292.0",
+    "vite": "https://esm.sh/vite@^7.3.0",
+    "@vitejs/plugin-react": "https://esm.sh/@vitejs/plugin-react@^5.1.2"
   }
 }
 </script>

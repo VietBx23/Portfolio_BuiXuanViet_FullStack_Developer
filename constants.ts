@@ -15,7 +15,7 @@ export const PERSONAL_INFO: ContactInfo = {
   github: "https://github.com/VietBx23"
 };
 
-export const SUMMARY = "Backend Developer with strong experience in Java, C#, .NET Core, and RESTful API development, combined with practical full-stack and mobile experience. Skilled in building scalable systems, real-time platforms, payment integrations, and EV charging management solutions. Experienced in working with large datasets, multiple payment methods, and real-world production environments.";
+export const SUMMARY = "I’m Bui Xuan Viet, a Fullstack Developer experienced in building scalable backend systems, modern frontend applications, and mobile solutions. I work with .NET, Java, Node.js, PHP, React, Angular, and React Native, and have strong experience with WordPress, multiple CMS platforms, and custom-built CMS systems. I focus on performance, clean architecture, and real-world deployment.";
 
 export const CAREER_GOALS = {
   shortTerm: "Master backend development with Java, C#, and Node.js while improving frontend skills with React, Angular, and Next.js through real-world projects.",
