@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { MapPin, Github, ArrowRight, Server, Database, Globe, ChevronRight, Globe2, Laptop } from 'lucide-react';
+import { MapPin, Github, ArrowRight, Server, Database, Globe, ChevronRight, Globe2, Laptop, Radio, Zap, LayoutTemplate } from 'lucide-react';
 import { PERSONAL_INFO } from '../constants';
 
 // --- Text Decrypt Effect Component ---
@@ -36,30 +36,50 @@ const TextDecrypt: React.FC<{ text: string; className?: string }> = ({ text, cla
 };
 
 const TechMarquee = () => {
+  // Helper to determine if icon is a string (URL) or Component
+  const isUrl = (icon: any): icon is string => typeof icon === 'string';
+
   const techStack = [
-    "C#", ".NET Core", "Java Spring Boot", "RESTful API", "ReactJS", "Node.js", 
-    "TypeScript", "SQL Server", "SignalR", "Firebase", "WebSockets", "MySQL", "JSP/Servlet"
+    { name: "C#", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/csharp/csharp-original.svg" },
+    { name: ".NET Core", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/dotnetcore/dotnetcore-original.svg" },
+    { name: "Spring Boot", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/spring/spring-original.svg" },
+    { name: "RESTful API", icon: Globe },
+    { name: "ReactJS", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" },
+    { name: "Node.js", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg" },
+    { name: "TypeScript", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg" },
+    { name: "SQL Server", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/microsoftsqlserver/microsoftsqlserver-plain.svg" },
+    { name: "SignalR", icon: Radio },
+    { name: "Firebase", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/firebase/firebase-plain.svg" },
+    { name: "WebSockets", icon: Zap },
+    { name: "MySQL", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg" },
+    { name: "JSP/Servlet", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg" }
   ];
 
+  const renderItem = (tech: any, index: number | string) => (
+    <li key={index} className="flex items-center gap-3 px-4 py-2 rounded-xl bg-slate-900/30 border border-slate-800/50 hover:border-emerald-500/30 hover:bg-slate-800/50 transition-all duration-300 cursor-default group mx-4 md:mx-6">
+      <div className="w-6 h-6 flex items-center justify-center transition-all duration-300 grayscale opacity-70 group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-110">
+        {isUrl(tech.icon) ? (
+          <img src={tech.icon} alt={tech.name} className="w-full h-full object-contain" />
+        ) : (
+          <tech.icon className="w-5 h-5 text-slate-400 group-hover:text-emerald-400" />
+        )}
+      </div>
+      <span className="text-sm md:text-base font-bold text-slate-500 font-mono group-hover:text-emerald-100 transition-colors whitespace-nowrap">
+        {tech.name}
+      </span>
+    </li>
+  );
+
   return (
-    <div className="w-full border-t border-slate-800/50 pt-10 mt-16 pb-10 bg-slate-950/30 backdrop-blur-sm relative overflow-hidden">
+    <div className="w-full border-t border-slate-800/50 pt-8 mt-16 pb-8 bg-slate-950/30 backdrop-blur-sm relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-r from-[#020617] via-transparent to-[#020617] z-10 pointer-events-none"></div>
-      <div className="inline-flex flex-nowrap overflow-hidden">
-        <ul className="flex items-center justify-center md:justify-start [&_li]:mx-12 [&_img]:max-w-none animate-marquee">
-          {techStack.map((tech, index) => (
-            <li key={index} className="flex items-center gap-3 text-lg font-bold text-slate-500 hover:text-emerald-400 transition-colors cursor-default whitespace-nowrap font-mono group">
-              <span className="text-slate-700 group-hover:text-emerald-500 transition-colors">//</span>
-              {tech}
-            </li>
-          ))}
+      
+      <div className="flex overflow-hidden select-none mask-linear-fade">
+        <ul className="flex items-center justify-center md:justify-start animate-marquee min-w-full">
+          {techStack.map((tech, index) => renderItem(tech, index))}
         </ul>
-        <ul className="flex items-center justify-center md:justify-start [&_li]:mx-12 [&_img]:max-w-none animate-marquee" aria-hidden="true">
-          {techStack.map((tech, index) => (
-            <li key={`dup-${index}`} className="flex items-center gap-3 text-lg font-bold text-slate-500 hover:text-emerald-400 transition-colors cursor-default whitespace-nowrap font-mono group">
-               <span className="text-slate-700 group-hover:text-emerald-500 transition-colors">//</span>
-              {tech}
-            </li>
-          ))}
+        <ul className="flex items-center justify-center md:justify-start animate-marquee min-w-full" aria-hidden="true">
+          {techStack.map((tech, index) => renderItem(tech, `dup-${index}`))}
         </ul>
       </div>
     </div>
