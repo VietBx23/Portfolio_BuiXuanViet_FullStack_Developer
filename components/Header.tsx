@@ -67,10 +67,7 @@ const Header: React.FC = () => {
             
             {/* Logo Area */}
             <a href="#home" onClick={(e) => handleClick(e, '#home')} className="flex items-center gap-4 group">
-                <div className="relative w-10 h-10 rounded-xl bg-gradient-to-br from-slate-800 to-slate-950 border border-slate-700 flex items-center justify-center overflow-hidden shadow-lg group-hover:border-emerald-500/50 transition-all duration-300">
-                    <div className="absolute inset-0 bg-emerald-500/20 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                    <Terminal className="w-5 h-5 text-emerald-500 relative z-10" />
-                </div>
+                
                 <div className="flex flex-col justify-center">
                     <span className="text-lg font-black tracking-tight leading-none text-white group-hover:text-emerald-400 transition-colors">
                         BUI XUAN VIET
