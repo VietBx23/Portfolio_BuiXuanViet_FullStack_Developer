@@ -17,13 +17,13 @@ const About: React.FC = () => {
   };
 
   return (
-    <section id="about" className="py-32 relative overflow-hidden bg-slate-950">
+    <section id="about" className="py-32 relative overflow-hidden bg-transparent">
       
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10" onMouseMove={handleMouseMove}>
         <div className="mb-20">
           <RevealOnScroll direction="bottom">
             <h2 className="text-4xl md:text-5xl font-black text-white mb-6 tracking-tight">
-                Beyond the <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400">Code</span>
+                Beyond the <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400 animate-shimmer bg-[length:200%_100%]">Code</span>
             </h2>
           </RevealOnScroll>
           <RevealOnScroll delay={200} direction="bottom">

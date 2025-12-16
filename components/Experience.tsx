@@ -5,7 +5,7 @@ import { Briefcase, Calendar } from 'lucide-react';
 
 const Experience: React.FC = () => {
   return (
-    <section id="experience" className="py-24 relative bg-[#020617]">
+    <section id="experience" className="py-24 relative bg-transparent">
       {/* Background Glow */}
       <div className="absolute top-1/4 right-0 w-[500px] h-[500px] bg-emerald-500/5 rounded-full blur-[100px] pointer-events-none"></div>
 
@@ -13,7 +13,7 @@ const Experience: React.FC = () => {
         <RevealOnScroll direction="bottom">
             <div className="mb-16">
                  <h2 className="text-4xl md:text-5xl font-black text-white mb-6 tracking-tight">
-                    Work <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-500">Experience</span>
+                    Work <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-500 animate-shimmer bg-[length:200%_100%]">Experience</span>
                 </h2>
                 <p className="text-slate-400 text-lg max-w-2xl">
                     My professional journey in building scalable systems and solving complex engineering problems.

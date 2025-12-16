@@ -1,56 +1,27 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { ArrowRight, Github, Command, Database, Globe, Cpu } from 'lucide-react';
 import { PERSONAL_INFO } from '../constants';
 import RevealOnScroll from './RevealOnScroll';
 
 const Hero: React.FC = () => {
-  // Generate random meteors
-  // Using more meteors with varied delays for a natural shower look
-  const meteors = new Array(20).fill(true).map((_, idx) => ({
+  // Generate refined meteors for Hero
+  // Fewer count (10), Slower speed (6s-12s), smaller delay variance
+  const meteors = useMemo(() => new Array(10).fill(true).map((_, idx) => ({
     left: Math.floor(Math.random() * 100) + '%',
-    top: Math.floor(Math.random() * 60 - 20) + '%', // Start slightly above or within view
-    delay: Math.random() * 1.5 + 0.2 + 's',
-    duration: Math.floor(Math.random() * 3 + 2) + 's',
-  }));
-
-  // Generate static twinkling stars
-  const stars = new Array(50).fill(true).map((_, idx) => ({
-    left: Math.floor(Math.random() * 100) + '%',
-    top: Math.floor(Math.random() * 100) + '%',
-    size: Math.random() > 0.5 ? 'w-1 h-1' : 'w-0.5 h-0.5',
-    delay: Math.random() * 5 + 's',
-    opacity: Math.random() * 0.5 + 0.3
-  }));
+    top: Math.floor(Math.random() * 60 - 20) + '%', 
+    delay: Math.random() * 2 + 's',
+    duration: Math.floor(Math.random() * 6 + 6) + 's', // Slow: 6s to 12s
+  })), []);
 
   return (
     <section id="home" className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden min-h-[95vh] flex flex-col justify-center">
       
-      {/* Dynamic Background Elements */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
-          
-          {/* 1. Twinkling Stars Background */}
-          {stars.map((star, idx) => (
-             <div 
-               key={`star-${idx}`}
-               className={`absolute bg-white rounded-full animate-twinkle ${star.size}`}
-               style={{
-                   left: star.left,
-                   top: star.top,
-                   animationDelay: star.delay,
-                   opacity: star.opacity
-               }}
-             ></div>
-          ))}
-
-          {/* 2. Meteor Shower Effect - Corrected Direction */}
+      {/* Meteor Layer - Specific to Hero */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden z-0">
           {meteors.map((meteor, idx) => (
             <span
-              key={`meteor-${idx}`}
-              // Rotation 215deg (approx 7 o'clock). 
-              // translateX will move it along that rotated axis.
-              // To make the head lead, we position the white head at the left (start) and tail to the right.
-              // When translating negative X, the left side (head) leads.
-              className="absolute h-0.5 w-[150px] bg-gradient-to-r from-slate-200 to-transparent rotate-[215deg] animate-meteor z-0 opacity-0"
+              key={`hero-meteor-${idx}`}
+              className="absolute h-[1px] w-[80px] bg-gradient-to-r from-slate-200 to-transparent rotate-[215deg] animate-meteor opacity-0"
               style={{
                 left: meteor.left,
                 top: meteor.top,
@@ -58,15 +29,12 @@ const Hero: React.FC = () => {
                 animationDuration: meteor.duration,
               }}
             >
-              {/* Meteor Head (The Glowing Star) - Positioned at Start (Left) */}
-              <span className="absolute top-1/2 -translate-y-1/2 left-0 w-[4px] h-[4px] bg-white rounded-full shadow-[0_0_15px_4px_rgba(255,255,255,0.6)]"></span>
-              {/* Meteor Tail Glow (Subtle) */}
-              <span className="absolute top-1/2 -translate-y-1/2 left-0 w-[50px] h-[1px] bg-emerald-400/50 blur-[1px]"></span>
+              {/* Smaller Head */}
+              <span className="absolute top-1/2 -translate-y-1/2 left-0 w-[2px] h-[2px] bg-white rounded-full shadow-[0_0_10px_2px_rgba(255,255,255,0.5)]"></span>
+              {/* Thinner Tail */}
+              <span className="absolute top-1/2 -translate-y-1/2 left-0 w-[40px] h-[1px] bg-emerald-400/30 blur-[1px]"></span>
             </span>
           ))}
-
-          {/* Moving Grid */}
-          <div className="absolute inset-0 bg-[linear-gradient(rgba(16,185,129,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(16,185,129,0.03)_1px,transparent_1px)] bg-[size:50px_50px] [mask-image:radial-gradient(ellipse_at_center,black_40%,transparent_80%)] animate-grid-flow"></div>
           
           {/* Spotlights */}
           <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-emerald-500/10 rounded-full blur-[120px] animate-pulse-slow"></div>

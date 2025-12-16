@@ -29,13 +29,13 @@ const Skills: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="mb-20 md:text-center max-w-4xl mx-auto">
           <RevealOnScroll direction="bottom">
-            <h2 className="text-4xl md:text-6xl font-black text-white mb-6 tracking-tighter">
-               Technical <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-500">Arsenal</span>
+            <h2 className="text-4xl md:text-6xl font-black text-white mb-6 tracking-tighter glitch-wrapper">
+               <span className="glitch-text" data-text="Technical Arsenal">Technical Arsenal</span>
             </h2>
           </RevealOnScroll>
           <RevealOnScroll delay={200} direction="bottom">
             <p className="text-slate-400 text-xl font-light">
-               My comprehensive toolkit for forging scalable, high-performance digital solutions.
+               My comprehensive toolkit for forging <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-500 font-semibold animate-shimmer bg-[length:200%_100%]">scalable, high-performance</span> digital solutions.
             </p>
           </RevealOnScroll>
         </div>

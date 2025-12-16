@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useMemo } from 'react';
 import { Github, Smartphone, Monitor, ArrowUpRight, Lock, ExternalLink, Layers } from 'lucide-react';
 import { PROJECTS } from '../constants';
 import { LinkData } from '../types';
@@ -201,6 +201,14 @@ const BrowserWireframe = ({ type }: { type: string }) => {
 
 
 const Projects: React.FC = () => {
+  // Meteors for Project section (sparse)
+  const meteors = useMemo(() => new Array(6).fill(true).map((_, idx) => ({
+    left: Math.floor(Math.random() * 100) + '%',
+    top: Math.floor(Math.random() * 80) + '%', 
+    delay: Math.random() * 3 + 's',
+    duration: Math.floor(Math.random() * 6 + 6) + 's',
+  })), []);
+
   const renderLinkIcon = (type: LinkData['type']) => {
     switch (type) {
       case 'github': return <Github className="h-4 w-4" />;
@@ -240,7 +248,26 @@ const Projects: React.FC = () => {
   };
 
   return (
-    <section id="projects" className="py-32 relative bg-[#020617] overflow-hidden">
+    <section id="projects" className="py-32 relative bg-transparent overflow-hidden">
+      {/* Meteor Layer - Specific to Projects */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden z-0">
+          {meteors.map((meteor, idx) => (
+            <span
+              key={`proj-meteor-${idx}`}
+              className="absolute h-[1px] w-[80px] bg-gradient-to-r from-slate-200 to-transparent rotate-[215deg] animate-meteor opacity-0"
+              style={{
+                left: meteor.left,
+                top: meteor.top,
+                animationDelay: meteor.delay,
+                animationDuration: meteor.duration,
+              }}
+            >
+              <span className="absolute top-1/2 -translate-y-1/2 left-0 w-[2px] h-[2px] bg-white rounded-full shadow-[0_0_10px_2px_rgba(255,255,255,0.5)]"></span>
+              <span className="absolute top-1/2 -translate-y-1/2 left-0 w-[40px] h-[1px] bg-emerald-400/30 blur-[1px]"></span>
+            </span>
+          ))}
+      </div>
+
       {/* Global Background Grid */}
       <div className="absolute inset-0 bg-[linear-gradient(rgba(16,185,129,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(16,185,129,0.03)_1px,transparent_1px)] bg-[size:100px_100px] pointer-events-none"></div>
 
@@ -253,7 +280,7 @@ const Projects: React.FC = () => {
                          Engineering
                     </h2>
                     <h3 className="text-4xl md:text-6xl font-black text-white tracking-tight leading-none">
-                        Featured <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-400">Works</span>
+                        Featured <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-400 animate-shimmer bg-[length:200%_100%]">Works</span>
                     </h3>
                 </div>
                 <div className="hidden md:block text-right">
