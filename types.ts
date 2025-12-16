@@ -13,6 +13,7 @@ export interface ProjectData {
   description: string;
   links: LinkData[];
   highlights?: string[];
+  images?: string[]; // Changed from single string to array
 }
 
 export interface ExperienceData {

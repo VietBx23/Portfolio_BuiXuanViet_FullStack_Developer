@@ -1,5 +1,5 @@
-import React, { useRef, useState, useMemo } from 'react';
-import { Github, Smartphone, Monitor, ArrowUpRight, Lock, ExternalLink, Layers } from 'lucide-react';
+import React, { useRef, useState, useMemo, useEffect } from 'react';
+import { Github, Smartphone, Monitor, ArrowUpRight, Lock, Layers, ChevronLeft, ChevronRight, ImageOff } from 'lucide-react';
 import { PROJECTS } from '../constants';
 import { LinkData } from '../types';
 import RevealOnScroll from './RevealOnScroll';
@@ -53,153 +53,122 @@ const ProjectCard3D: React.FC<{ children: React.ReactNode; className?: string }>
     );
 };
 
-// --- Wireframe Components ---
-// Kept wireframes dark as they represent "screens" which look better dark in portfolios
+// --- Image Slider Component ---
+const ImageSlider: React.FC<{ images: string[]; title: string }> = ({ images, title }) => {
+    const [currentIndex, setCurrentIndex] = useState(0);
+    const [isHovering, setIsHovering] = useState(false);
+    const [imageErrors, setImageErrors] = useState<Record<number, boolean>>({});
 
-// 1. Mobile App Wireframe (iPhone Style)
-const MobileWireframe = () => (
-    <div className="relative w-[150px] h-[300px] bg-[#0a0f1c] rounded-[2.5rem] border-[6px] border-[#1e293b] shadow-2xl transform rotate-[-6deg] group-hover:rotate-0 transition-all duration-700 ease-[cubic-bezier(0.34,1.56,0.64,1)] z-20">
-      {/* Dynamic Island */}
-      <div className="absolute top-3 left-1/2 -translate-x-1/2 w-16 h-5 bg-black rounded-full z-30 flex items-center justify-center gap-1.5">
-         <div className="w-1 h-1 rounded-full bg-slate-800"></div>
-         <div className="w-1 h-1 rounded-full bg-emerald-500/50"></div>
-      </div>
-      
-      {/* Screen */}
-      <div className="w-full h-full bg-[#0f172a] rounded-[2.2rem] overflow-hidden flex flex-col relative">
-          {/* Header Map/Gradient */}
-          <div className="h-24 bg-gradient-to-br from-emerald-900/40 to-slate-900 relative overflow-hidden border-b border-white/5">
-             <div className="absolute inset-0 bg-[radial-gradient(#10b981_1px,transparent_1px)] [background-size:12px_12px] opacity-20"></div>
-             {/* Abstract Map Pin */}
-             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center animate-pulse">
-                <div className="w-3 h-3 bg-emerald-400 rounded-full shadow-[0_0_15px_#34d399]"></div>
-             </div>
-          </div>
-          
-          {/* App List Content */}
-          <div className="p-3 space-y-2 flex-1 bg-slate-900/50">
-             {[1, 2, 3].map((i) => (
-                 <div key={i} className="flex items-center gap-2 p-2 rounded-xl bg-white/5 border border-white/5 backdrop-blur-sm">
-                    <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${i===1 ? 'bg-emerald-500/20 text-emerald-400' : 'bg-slate-800 text-slate-600'}`}>
-                        <div className="w-4 h-4 rounded-sm bg-current opacity-50"></div>
-                    </div>
-                    <div className="space-y-1.5 flex-1">
-                       <div className="w-16 h-1.5 bg-slate-600/50 rounded-full"></div>
-                       <div className="w-24 h-1.5 bg-slate-700/30 rounded-full"></div>
-                    </div>
-                 </div>
-             ))}
-             {/* Chart */}
-             <div className="mt-auto h-20 rounded-xl bg-white/5 border border-white/5 flex items-end justify-between px-3 pb-2 pt-3 gap-1">
-                 {[40, 70, 50, 90, 30, 80].map((h, i) => (
-                     <div key={i} className="w-full bg-emerald-500/40 rounded-t-sm" style={{height: `${h}%`}}></div>
-                 ))}
-             </div>
-          </div>
+    useEffect(() => {
+        if (!images || images.length <= 1) return;
+        
+        // Auto slide every 3.5 seconds if not hovering
+        const interval = setInterval(() => {
+            if (!isHovering) {
+                setCurrentIndex((prev) => (prev + 1) % images.length);
+            }
+        }, 3500);
 
-          {/* Bottom Nav */}
-          <div className="h-14 border-t border-white/5 bg-[#0a0f1c] flex items-center justify-around px-2">
-             {[1,2,3,4].map(i => <div key={i} className="w-10 h-1 rounded-full bg-slate-800"></div>)}
-          </div>
-      </div>
-      
-      {/* Reflection */}
-      <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-white/10 to-transparent pointer-events-none rounded-r-[2.5rem]"></div>
-    </div>
-);
+        return () => clearInterval(interval);
+    }, [images, isHovering]);
 
-// 2. Dashboard Wireframe (Browser Style)
-const BrowserWireframe = ({ type }: { type: string }) => {
-    const isEcommerce = type.toLowerCase().includes('sneaker') || type.toLowerCase().includes('shop');
-    
+    const nextSlide = (e: React.MouseEvent) => {
+        e.stopPropagation();
+        setCurrentIndex((prev) => (prev + 1) % images.length);
+    };
+
+    const prevSlide = (e: React.MouseEvent) => {
+         e.stopPropagation();
+        setCurrentIndex((prev) => (prev - 1 + images.length) % images.length);
+    };
+
+    const goToSlide = (index: number) => {
+        setCurrentIndex(index);
+    }
+
+    const handleImageError = (index: number) => {
+        setImageErrors(prev => ({ ...prev, [index]: true }));
+    };
+
+    if (!images || images.length === 0) {
+        return <div className="absolute inset-0 bg-slate-200 dark:bg-slate-800 animate-pulse" />;
+    }
+
+    // Fallback image URL (Abstract tech background)
+    const FALLBACK_IMAGE = "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=1600&auto=format&fit=crop";
+
     return (
-        <div className="w-[90%] aspect-[16/10] bg-[#0f172a] rounded-xl border border-slate-700 shadow-2xl flex flex-col overflow-hidden transform group-hover:scale-[1.02] transition-transform duration-700 relative z-10 mx-auto">
-            {/* Browser Bar */}
-            <div className="h-8 bg-[#1e293b] border-b border-slate-700 flex items-center px-4 gap-2">
-                <div className="flex gap-1.5">
-                    <div className="w-2.5 h-2.5 rounded-full bg-rose-500/80"></div>
-                    <div className="w-2.5 h-2.5 rounded-full bg-amber-500/80"></div>
-                    <div className="w-2.5 h-2.5 rounded-full bg-emerald-500/80"></div>
-                </div>
-                <div className="ml-4 flex-1 h-5 bg-slate-800/50 rounded-md text-[9px] flex items-center px-3 text-slate-500 font-mono">
-                    https://{type.toLowerCase().replace(/\s/g, '')}.com
-                </div>
-            </div>
-
-            {/* Window Content */}
-            <div className="flex-1 flex relative">
-                 {/* Sidebar */}
-                <div className="w-14 bg-slate-900/50 border-r border-slate-800 hidden sm:flex flex-col items-center py-4 gap-4">
-                    <div className="w-8 h-8 rounded-lg bg-emerald-500/20 mb-2 border border-emerald-500/20"></div>
-                    {[1,2,3,4].map(i => <div key={i} className="w-5 h-5 rounded bg-slate-800/80"></div>)}
-                </div>
-
-                {/* Main Area */}
-                <div className="flex-1 p-4 bg-slate-950 relative overflow-hidden">
-                    {/* Background Grid */}
-                    <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:24px_24px]"></div>
-
-                    {isEcommerce ? (
-                        // E-commerce Layout
-                        <div className="relative z-10 space-y-4">
-                             {/* Hero Banner */}
-                             <div className="w-full h-28 rounded-xl bg-gradient-to-r from-slate-900 to-slate-800 border border-slate-800/50 p-4 flex flex-col justify-center relative overflow-hidden">
-                                 <div className="absolute right-0 top-0 w-32 h-full bg-gradient-to-l from-emerald-500/10 to-transparent"></div>
-                                 <div className="w-1/3 h-3 bg-slate-700 rounded mb-2"></div>
-                                 <div className="w-1/2 h-2 bg-slate-800 rounded"></div>
-                                 <div className="mt-3 px-3 py-1 bg-emerald-500 text-slate-900 font-bold w-fit rounded text-[9px]">Shop Collection</div>
-                             </div>
-
-                             <div className="grid grid-cols-3 gap-3">
-                                 {[1,2,3].map(i => (
-                                     <div key={i} className="rounded-xl border border-slate-800 bg-slate-900/80 flex flex-col p-2 gap-2">
-                                         <div className="aspect-square rounded-lg bg-slate-800/50 relative overflow-hidden group/item">
-                                              <div className="absolute inset-0 bg-slate-800"></div>
-                                              <div className="absolute inset-2 bg-slate-700/30 rounded"></div>
-                                         </div>
-                                         <div className="h-2 w-3/4 bg-slate-700/50 rounded"></div>
-                                         <div className="h-2 w-1/2 bg-emerald-500/30 rounded"></div>
-                                     </div>
-                                 ))}
+        <div 
+            className="absolute inset-0 w-full h-full group/slider"
+            onMouseEnter={() => setIsHovering(true)}
+            onMouseLeave={() => setIsHovering(false)}
+        >
+            {/* Images - Sliding Effect */}
+            {images.map((img, idx) => (
+                <div 
+                    key={idx}
+                    className={`absolute inset-0 w-full h-full transition-opacity duration-700 ease-in-out ${idx === currentIndex ? 'opacity-100 z-10' : 'opacity-0 z-0'}`}
+                >
+                    {imageErrors[idx] ? (
+                        <div className="w-full h-full bg-slate-800 flex items-center justify-center">
+                             <img 
+                                src={FALLBACK_IMAGE}
+                                alt="Fallback"
+                                className="absolute inset-0 w-full h-full object-cover opacity-50"
+                             />
+                             <div className="z-10 flex flex-col items-center text-slate-400">
+                                <ImageOff className="w-12 h-12 mb-2 opacity-50" />
+                                <span className="text-xs uppercase tracking-widest font-bold">Image Unavailable</span>
                              </div>
                         </div>
                     ) : (
-                        // Admin Dashboard Layout
-                        <div className="relative z-10 space-y-4">
-                             <div className="grid grid-cols-3 gap-4">
-                                 {[1,2,3].map(i => (
-                                     <div key={i} className="h-24 rounded-xl border border-slate-800 bg-slate-900/80 p-4 flex flex-col justify-between relative overflow-hidden">
-                                         <div className="absolute top-0 right-0 p-2 opacity-20">
-                                            <div className="w-8 h-8 rounded-full bg-white"></div>
-                                         </div>
-                                         <div className="w-8 h-8 rounded-lg bg-slate-800 border border-slate-700"></div>
-                                         <div className="space-y-1.5">
-                                            <div className="h-2 w-16 bg-slate-700/50 rounded"></div>
-                                            <div className="h-3 w-10 bg-emerald-500/40 rounded"></div>
-                                         </div>
-                                     </div>
-                                 ))}
-                             </div>
-                             {/* Table/Chart */}
-                             <div className="w-full h-40 rounded-xl border border-slate-800 bg-slate-900/50 p-4">
-                                 <div className="flex items-end justify-between h-full gap-3 px-2 pb-1">
-                                     {[35, 60, 45, 80, 50, 75, 60, 90, 55, 70].map((h, i) => (
-                                         <div key={i} className="w-full bg-gradient-to-t from-emerald-500/20 to-emerald-500/50 border-t border-emerald-400/50 rounded-t-sm relative group/bar" style={{height: `${h}%`}}>
-                                            <div className="absolute -top-4 left-1/2 -translate-x-1/2 text-[8px] text-emerald-400 opacity-0 group-hover/bar:opacity-100 transition-opacity">{h}%</div>
-                                         </div>
-                                     ))}
-                                 </div>
-                             </div>
-                        </div>
+                        <img 
+                            src={img} 
+                            alt={`${title} - slide ${idx + 1}`}
+                            className="w-full h-full object-cover transform transition-transform duration-[10000ms] ease-linear scale-105 group-hover/slider:scale-110" // Slow zoom effect
+                            loading="lazy"
+                            onError={() => handleImageError(idx)}
+                        />
                     )}
+                     {/* Overlay Gradient for better text visibility if needed */}
+                     <div className="absolute inset-0 bg-gradient-to-t from-slate-900/40 via-transparent to-transparent opacity-60"></div>
                 </div>
-            </div>
-            {/* Reflection */}
-            <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/5 to-transparent pointer-events-none"></div>
+            ))}
+
+            {/* Navigation Arrows (Only visible on hover) */}
+            {images.length > 1 && (
+                <>
+                    <button 
+                        onClick={prevSlide}
+                        className="absolute left-2 top-1/2 -translate-y-1/2 z-20 p-2 rounded-full bg-black/30 text-white backdrop-blur-sm opacity-0 group-hover/slider:opacity-100 transition-opacity hover:bg-black/50 hover:scale-110 duration-200"
+                    >
+                        <ChevronLeft size={20} />
+                    </button>
+                    <button 
+                        onClick={nextSlide}
+                        className="absolute right-2 top-1/2 -translate-y-1/2 z-20 p-2 rounded-full bg-black/30 text-white backdrop-blur-sm opacity-0 group-hover/slider:opacity-100 transition-opacity hover:bg-black/50 hover:scale-110 duration-200"
+                    >
+                        <ChevronRight size={20} />
+                    </button>
+                </>
+            )}
+
+            {/* Indicators / Dots */}
+            {images.length > 1 && (
+                <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 flex gap-2">
+                    {images.map((_, idx) => (
+                        <button
+                            key={idx}
+                            onClick={(e) => { e.stopPropagation(); goToSlide(idx); }}
+                            className={`h-1.5 rounded-full transition-all duration-300 ${idx === currentIndex ? 'w-6 bg-white' : 'w-1.5 bg-white/50 hover:bg-white/80'}`}
+                            aria-label={`Go to slide ${idx + 1}`}
+                        />
+                    ))}
+                </div>
+            )}
         </div>
     );
 };
-
 
 const Projects: React.FC = () => {
   // Meteors for Project section (sparse)
@@ -217,35 +186,6 @@ const Projects: React.FC = () => {
       case 'ios': return <Smartphone className="h-4 w-4" />;
       default: return <Monitor className="h-4 w-4" />;
     }
-  };
-
-  const getVisual = (title: string, index: number) => {
-    const isMobile = title.toLowerCase().includes('mobile') || title.toLowerCase().includes('app');
-    
-    return (
-        <div className="w-full h-full bg-[#050914] flex items-center justify-center relative overflow-hidden group-hover:bg-[#080d1a] transition-colors duration-500">
-             {/* 1. Perspective Grid Background */}
-             <div className="absolute inset-0 perspective-[500px]">
-                 <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:40px_40px] [transform:rotateX(60deg)] origin-top opacity-30"></div>
-             </div>
-             
-             {/* 2. Ambient Glow */}
-             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3/4 h-3/4 bg-emerald-500/10 blur-[100px] rounded-full pointer-events-none group-hover:bg-emerald-500/20 transition-all duration-700"></div>
-             
-             {/* 3. Tech Deco Lines */}
-             <div className="absolute top-0 left-0 w-full h-full pointer-events-none opacity-20">
-                 <div className="absolute top-4 left-4 w-2 h-2 border-t border-l border-white"></div>
-                 <div className="absolute top-4 right-4 w-2 h-2 border-t border-r border-white"></div>
-                 <div className="absolute bottom-4 left-4 w-2 h-2 border-b border-l border-white"></div>
-                 <div className="absolute bottom-4 right-4 w-2 h-2 border-b border-r border-white"></div>
-             </div>
-
-             {/* 4. Wireframe */}
-             <div className="transform scale-100 transition-transform duration-500 relative z-20">
-                {isMobile ? <MobileWireframe /> : <BrowserWireframe type={title} />}
-             </div>
-        </div>
-    );
   };
 
   return (
@@ -304,14 +244,16 @@ const Projects: React.FC = () => {
 
                     <div className={`relative z-10 flex flex-col lg:flex-row ${index % 2 === 0 ? '' : 'lg:flex-row-reverse'} items-center gap-12 lg:gap-20`}>
                         
-                        {/* Visual Side */}
+                        {/* Visual Side with Slider */}
                         <div className="w-full lg:w-[60%] perspective-1000">
                              <ProjectCard3D>
-                                <div className="relative rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#050914] shadow-2xl dark:shadow-black/50 group-hover:shadow-emerald-500/10 group-hover:border-emerald-500/30 transition-all duration-500 aspect-video">
-                                    {getVisual(project.title, index)}
+                                <div className="relative rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#050914] shadow-2xl dark:shadow-black/50 group-hover:shadow-emerald-500/10 group-hover:border-emerald-500/30 transition-all duration-500 aspect-video group">
                                     
-                                    {/* Glass Shine */}
-                                    <div className="absolute inset-0 bg-gradient-to-tr from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
+                                    {/* Image Carousel */}
+                                    <ImageSlider images={project.images || []} title={project.title} />
+
+                                    {/* Glass Shine Effect (on top of slider) */}
+                                    <div className="absolute inset-0 bg-gradient-to-tr from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none z-30"></div>
                                 </div>
                              </ProjectCard3D>
                         </div>

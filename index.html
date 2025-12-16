@@ -74,11 +74,17 @@
       }
     </script>
     <script>
-      // Initialize Theme
-      if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-        document.documentElement.classList.add('dark')
-      } else {
+      // Initialize Theme - PRIORITIZE DARK MODE
+      // If 'theme' is NOT in localStorage, default to 'dark' regardless of system preference.
+      // Only use 'light' if explicitly set in localStorage.
+      if (localStorage.theme === 'light') {
         document.documentElement.classList.remove('dark')
+      } else {
+        document.documentElement.classList.add('dark')
+        // Optional: Set it to storage if you want it to persist immediately
+        if (!('theme' in localStorage)) {
+             localStorage.setItem('theme', 'dark');
+        }
       }
     </script>
     <style>

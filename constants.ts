@@ -104,7 +104,13 @@ export const PROJECTS: ProjectData[] = [
     period: "06/2024 – 10/2024",
     tech: ["C#", ".NET Core", "SQL Server", "EF Core", "SignalR", "RESTful APIs", "WebSocket", "Blazor", "Bootstrap", "LINQ"],
     description: "A large-scale management platform for electric vehicle charging stations. The system enables real-time monitoring, user management, multi-payment support, charger control, performance analytics, and detailed reports. Deployed on VPS and designed for scalability and reliability.",
-    links: []
+    links: [],
+    images: [
+        "https://images.unsplash.com/photo-1669476022830-580a5522513a?q=80&w=1600&auto=format&fit=crop", // EV Charging
+        "https://images.unsplash.com/photo-1593941707882-a5bba14938c7?q=80&w=1600&auto=format&fit=crop", // EV Station
+        "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1600&auto=format&fit=crop", // Analytics Dashboard
+        "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=1600&auto=format&fit=crop" // Server/Tech
+    ]
   },
   {
     title: "SolarEV Mobile Application",
@@ -115,6 +121,12 @@ export const PROJECTS: ProjectData[] = [
       { label: "Android", url: "https://play.google.com/store/search?q=solarev&c=apps", type: "android" },
       { label: "iOS", url: "https://apps.apple.com/vn/app/solarev-tr%E1%BA%A1m-s%E1%BA%A1c-xe-%C4%91i%E1%BB%87n/id6470471363", type: "ios" },
       { label: "GitHub", url: "https://github.com/VietBx23/APP-SOLAREV", type: "github" }
+    ],
+    images: [
+        "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?q=80&w=1600&auto=format&fit=crop", // Mobile App UI
+        "https://images.unsplash.com/photo-1526628953301-3e589a6a8b74?q=80&w=1600&auto=format&fit=crop", // App Dashboard
+        "https://images.unsplash.com/photo-1622737133809-d95047b9e673?q=80&w=1600&auto=format&fit=crop", // Map/Navigation
+        "https://images.unsplash.com/photo-1596742578443-7682ef5251cd?q=80&w=1600&auto=format&fit=crop" // QR Code / Payment
     ]
   },
   {
@@ -125,6 +137,12 @@ export const PROJECTS: ProjectData[] = [
     links: [
       { label: "SolarEV.vn", url: "https://solarev.vn/", type: "live" },
       { label: "FocusSolar.vn", url: "https://focussolar.vn/", type: "live" }
+    ],
+    images: [
+        "https://images.unsplash.com/photo-1497435334941-8c899ee9e8e9?q=80&w=1600&auto=format&fit=crop", // Modern Office/Web
+        "https://images.unsplash.com/photo-1509391366360-2e959784a276?q=80&w=1600&auto=format&fit=crop", // Solar Panels
+        "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1600&auto=format&fit=crop", // Website Dashboard
+        "https://images.unsplash.com/photo-1486406140526-918346dca647?q=80&w=1600&auto=format&fit=crop" // Corporate Building
     ]
   },
   {
@@ -134,6 +152,12 @@ export const PROJECTS: ProjectData[] = [
     description: "Full-featured e-commerce system with customer purchasing flow, vouchers, reviews, admin management, warehouse control, revenue statistics, and authorization management.",
     links: [
       { label: "GitHub", url: "https://github.com/VietBx23/WebsiteSneaker", type: "github" }
+    ],
+    images: [
+        "https://images.unsplash.com/photo-1552346154-21d32810aba3?q=80&w=1600&auto=format&fit=crop", // Sneakers
+        "https://images.unsplash.com/photo-1556742049-0cfed4f7a07d?q=80&w=1600&auto=format&fit=crop", // E-commerce Payment
+        "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?q=80&w=1600&auto=format&fit=crop", // Shoes Collection
+        "https://images.unsplash.com/photo-1472851294608-4155f2118c03?q=80&w=1600&auto=format&fit=crop" // Shopping
     ]
   },
   {
@@ -143,6 +167,12 @@ export const PROJECTS: ProjectData[] = [
     description: "Desktop application for shoe store management including QR login, product scanning, multi-payment options, invoice management, employee and customer management, and sales analytics.",
     links: [
       { label: "GitHub", url: "https://github.com/VietBx23/ShoeManagementApp", type: "github" }
+    ],
+    images: [
+        "https://images.unsplash.com/photo-1556155092-490a1ba16284?q=80&w=1600&auto=format&fit=crop", // Software/Dashboard
+        "https://images.unsplash.com/photo-1449247709967-d4461a6a6103?q=80&w=1600&auto=format&fit=crop", // Desktop Work
+        "https://images.unsplash.com/photo-1566576912906-254d7943f670?q=80&w=1600&auto=format&fit=crop", // Warehouse
+        "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?q=80&w=1600&auto=format&fit=crop" // Analytics
     ]
   }
 ];
